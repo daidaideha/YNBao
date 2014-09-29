@@ -1,4 +1,4 @@
-package com.innouni.yinongbao.activity.exhibition;
+package com.innouni.yinongbao.activity.pest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +25,16 @@ import android.widget.TextView;
 import com.innouni.yinongbao.R;
 import com.innouni.yinongbao.adapter.ExperDetailGVAdapter;
 import com.innouni.yinongbao.unit.HttpCode;
-import com.innouni.yinongbao.unit.exhibition.ExhibitionUnit;
+import com.innouni.yinongbao.unit.pest.PestUnit;
 import com.innouni.yinongbao.widget.IntentToOther;
 import com.innouni.yinongbao.widget.comFunction;
 
 /***
- * 农资展示产品列表界面
+ * 害虫列表界面
  * @author LinYuLing
- * @UpdateDate 2014-09-28
+ * @UpdateDate 2014-09-30
  */
-public class ExhibitionTypeActivity extends Activity {
+public class PestTypeActivity extends Activity {
 	/***
 	 * 头部返回按钮
 	 */
@@ -57,7 +57,7 @@ public class ExhibitionTypeActivity extends Activity {
 	/***
 	 * 数据列表
 	 */
-	private List<ExhibitionUnit> list_data;
+	private List<PestUnit> list_data;
 	/***
 	 * id
 	 */
@@ -90,7 +90,7 @@ public class ExhibitionTypeActivity extends Activity {
 		setContentView(R.layout.activity_exper_company);
 		dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		list_data = new ArrayList<ExhibitionUnit>();
+		list_data = new ArrayList<PestUnit>();
 		
 		try {
 			type = getIntent().getIntExtra("type", 0);
@@ -100,9 +100,9 @@ public class ExhibitionTypeActivity extends Activity {
 				search = getIntent().getStringExtra("search");
 			}
 			System.out.println("id: " + id);
+			System.out.println("search: " + search);
 		} catch (Exception e) {
 			// TODO: handle exception
-			
 		}
 
 		initHeader();
@@ -117,7 +117,7 @@ public class ExhibitionTypeActivity extends Activity {
 		rl_back = (RelativeLayout) findViewById(R.id.rl_header_back);
 		tv_title = (TextView) findViewById(R.id.tv_header_title);
 		
-		tv_title.setText(getString(R.string.tv_header_exhibition_type));
+		tv_title.setText(getString(R.string.tv_header_pest_type));
 		rl_back.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -146,8 +146,8 @@ public class ExhibitionTypeActivity extends Activity {
 				// TODO Auto-generated method stub
 				Bundle bundle = new Bundle();
 				bundle.putString("id", list_data.get(position).getId());
-				new IntentToOther(ExhibitionTypeActivity.this,
-						ExhibitionDetailActivity.class, bundle);
+				new IntentToOther(PestTypeActivity.this,
+						PestDetailActivity.class, bundle);
 			}
 		});
 	}
@@ -197,7 +197,7 @@ public class ExhibitionTypeActivity extends Activity {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			pd = new ProgressDialog(ExhibitionTypeActivity.this);
+			pd = new ProgressDialog(PestTypeActivity.this);
 			pd.setIndeterminate(true);
 			pd.setCancelable(true);
 			pd.setMessage(getString(R.string.pd_data_link));
@@ -215,11 +215,11 @@ public class ExhibitionTypeActivity extends Activity {
 			// TODO Auto-generated method stub
 			String requery = "";
 			if (type == 0) {
-				requery = comFunction.getDataFromServer("get_shop_list", 
-						paramsList, ExhibitionTypeActivity.this);
+				requery = comFunction.getDataFromServer("get_gallery_list", 
+						paramsList, PestTypeActivity.this);
 			} else {
-				requery = comFunction.getDataFromServer("get_shop_search_list", 
-						paramsList, ExhibitionTypeActivity.this);
+				requery = comFunction.getDataFromServer("get_gallery_search_list", 
+						paramsList, PestTypeActivity.this);
 			}
 			System.out.println("requery: " + requery);
 			try {
@@ -234,15 +234,15 @@ public class ExhibitionTypeActivity extends Activity {
 					if (jArray_data == null) {
 						return null;
 					}
-					ExhibitionUnit unit = null;
+					PestUnit unit = null;
 					for (int i = 0; i < jArray_data.length(); i++) {
-						unit = new ExhibitionUnit();
+						unit = new PestUnit();
 						unit.setId(jArray_data.getJSONObject(i).getString("id"));
-						if (type == 0) {
-							path = jArray_data.getJSONObject(i).getString("pic_url");
-						} else {
+//						if (type == 0) {
+//							path = jArray_data.getJSONObject(i).getString("pic_url");
+//						} else {
 							path = jArray_data.getJSONObject(i).getString("thumb");
-						}
+//						}
 						unit.setThumb(path);
 						unit.setTitle(jArray_data.getJSONObject(i).getString("title"));
 						list_data.add(unit);
@@ -263,11 +263,11 @@ public class ExhibitionTypeActivity extends Activity {
 				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
 					adapter.notifyDataSetChanged();
 				} else {
-					comFunction.toastMsg(message, ExhibitionTypeActivity.this);
+					comFunction.toastMsg(message, PestTypeActivity.this);
 				}
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						ExhibitionTypeActivity.this);
+						PestTypeActivity.this);
 			}
 			if (pd.isShowing()) {
 				pd.dismiss();

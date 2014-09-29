@@ -36,6 +36,7 @@ import com.innouni.yinongbao.activity.exhibition.ExhibitionActivity;
 import com.innouni.yinongbao.activity.expert.ExpertMainActivity;
 import com.innouni.yinongbao.activity.group.GroupOfListActivity;
 import com.innouni.yinongbao.activity.knowledge.KnowledgeActivity;
+import com.innouni.yinongbao.activity.pest.PestActivity;
 import com.innouni.yinongbao.cache.ImageLoader;
 import com.innouni.yinongbao.unit.AdUnit;
 import com.innouni.yinongbao.unit.HttpCode;
@@ -148,6 +149,9 @@ public class HomePageFragment extends Fragment implements OnClickListener {
 		initViewPager();
 	}
 
+	/***
+	 * 轮播图赋值
+	 */
 	private void initPVData() {
 		for (int i = 0; i < list_ad.size(); i++) {
 			ImageView imageView = new ImageView(getActivity());
@@ -170,6 +174,7 @@ public class HomePageFragment extends Fragment implements OnClickListener {
 			layoutParams.setMargins(10, 10, 10, 10);
 			imageView2.setLayoutParams(layoutParams);
 			pageViews.add(imageView);
+			list_bottom.add(imageView2);
 			ll_vp_bottom.addView(imageView2);
 		}
 		mViewPager.setAdapter(new MyAdapter());
@@ -285,7 +290,7 @@ public class HomePageFragment extends Fragment implements OnClickListener {
 			new IntentToOther(getActivity(), ExhibitionActivity.class, null);
 			break;
 		case R.id.btn_main_secondtwo:
-
+			new IntentToOther(getActivity(), PestActivity.class, null);
 			break;
 		case R.id.btn_main_secondthree:
 

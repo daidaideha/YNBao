@@ -1,4 +1,4 @@
-package com.innouni.yinongbao.activity.exhibition;
+package com.innouni.yinongbao.activity.pest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,8 @@ import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebSettings.TextSize;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,24 +36,27 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.innouni.yinongbao.R;
-import com.innouni.yinongbao.adapter.ExperDetailListAdapter;
+import com.innouni.yinongbao.activity.exhibition.ExhibitionDetailActivity;
+import com.innouni.yinongbao.adapter.ExperDetailGVAdapter;
 import com.innouni.yinongbao.cache.ImageLoader;
 import com.innouni.yinongbao.unit.HttpCode;
+import com.innouni.yinongbao.unit.exhibition.ExhibitionMainUnit;
 import com.innouni.yinongbao.unit.exhibition.ExhibitionUnit;
-import com.innouni.yinongbao.view.MyListView;
+import com.innouni.yinongbao.unit.pest.PestUnit;
+import com.innouni.yinongbao.view.MyGridView;
 import com.innouni.yinongbao.widget.IntentToOther;
 import com.innouni.yinongbao.widget.comFunction;
 import com.innouni.yinongbao.widget.sPreferences;
 
 /***
- * 农资展厅产品详情界面
+ * 农资展厅害虫详情界面
  * 
  * @author LinYuLing
  * @Updatedate 2014-09-28
  */
 @SuppressLint("SetJavaScriptEnabled")
 @SuppressWarnings("deprecation")
-public class ExhibitionDetailActivity extends Activity implements
+public class PestDetailActivity extends Activity implements
 		OnClickListener {
 	/***
 	 * 头部返回按钮
@@ -68,41 +71,30 @@ public class ExhibitionDetailActivity extends Activity implements
 	 */
 	private LinearLayout ll_bodyer;
 	/***
-	 * 产品图片展示控件
+	 * 害虫图片展示控件
 	 */
 	private ImageView iv_photo;
 	/***
-	 * tv_name：产品名称 tv_company：产品所属公司
+	 * tv_name：害虫名称
+	 * tv_date：更新时间 
 	 */
-	private TextView tv_name, tv_company;
+	private TextView tv_name, tv_date;
 	/***
-	 * tv_collect：收藏 tv_share：分享
+	 * tv_collect：收藏
 	 */
-	private TextView tv_collect, tv_share;
-	/***
-	 * tv_offer：供应商
-	 */
-	private TextView tv_offer;
+	private TextView tv_collect;
 	/***
 	 * 详情内容
 	 */
 	private WebView mWebView;
 	/***
-	 * 应用案例
+	 * 相关防治产品
 	 */
-	private TextView tv_case;
+	private TextView tv_product;
 	/***
 	 * 应用案例
 	 */
-	private MyListView listView;
-	/***
-	 * edt_phone：手机号输入框 edt_context：资讯内容输入框
-	 */
-	private EditText edt_phone, edt_context;
-	/***
-	 * 咨询按钮
-	 */
-	private Button btn_submit;
+	private MyGridView gridView;
 
 	/***
 	 * 用来判断是否已收藏
@@ -113,9 +105,9 @@ public class ExhibitionDetailActivity extends Activity implements
 	 */
 	private String id;
 	/***
-	 * 农资展厅产品实体类
+	 * 害虫实体类
 	 */
-	private ExhibitionUnit unit = null;
+	private PestUnit unit = null;
 
 	/***
 	 * 存储数据的sp
@@ -138,16 +130,12 @@ public class ExhibitionDetailActivity extends Activity implements
 	 * 收藏操作异步
 	 */
 	private FocusTask focusTask;
-	/***
-	 * 采购查询异步
-	 */
-	private PostTask postTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_exhibition_detail);
+		setContentView(R.layout.activity_pest_detail);
 		iSPreferences = new sPreferences(this);
 		mImageLoader = new ImageLoader(this);
 		dm = new DisplayMetrics();
@@ -158,6 +146,7 @@ public class ExhibitionDetailActivity extends Activity implements
 			System.out.println("id: " + id);
 		} catch (Exception e) {
 			// TODO: handle exception
+			id = "";
 		}
 
 		initHeader();
@@ -172,7 +161,7 @@ public class ExhibitionDetailActivity extends Activity implements
 		rl_back = (RelativeLayout) findViewById(R.id.rl_header_back);
 		tv_title = (TextView) findViewById(R.id.tv_header_title);
 
-		tv_title.setText(getString(R.string.tv_header_exhibition_detail));
+		tv_title.setText(getString(R.string.tv_header_pest_detail));
 		rl_back.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -190,21 +179,26 @@ public class ExhibitionDetailActivity extends Activity implements
 		ll_bodyer = (LinearLayout) findViewById(R.id.ll_bodyer);
 		iv_photo = (ImageView) findViewById(R.id.iv_photo);
 		tv_name = (TextView) findViewById(R.id.tv_name);
-		tv_company = (TextView) findViewById(R.id.tv_company);
+		tv_date = (TextView) findViewById(R.id.tv_date);
 		tv_collect = (TextView) findViewById(R.id.tv_collect);
-		tv_share = (TextView) findViewById(R.id.tv_share);
-		tv_offer = (TextView) findViewById(R.id.tv_offer);
 		mWebView = (WebView) findViewById(R.id.web_context);
-		tv_case = (TextView) findViewById(R.id.tv_case);
-		listView = (MyListView) findViewById(R.id.listview);
-		edt_phone = (EditText) findViewById(R.id.edt_phone);
-		edt_context = (EditText) findViewById(R.id.edt_context);
-		btn_submit = (Button) findViewById(R.id.btn_submit);
+		tv_product = (TextView) findViewById(R.id.tv_product);
+		gridView = (MyGridView) findViewById(R.id.gridview);
+		
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				// TODO Auto-generated method stub
+				Bundle bundle = new Bundle();
+				bundle.putString("id", unit.getProducts().get(position).getId());
+				new IntentToOther(PestDetailActivity.this,
+						ExhibitionDetailActivity.class, bundle);
+			}
+		});
 
 		tv_collect.setOnClickListener(this);
-		tv_offer.setOnClickListener(this);
-		tv_share.setOnClickListener(this);
-		btn_submit.setOnClickListener(this);
 		initWeb();
 	}
 
@@ -287,19 +281,6 @@ public class ExhibitionDetailActivity extends Activity implements
 			IS_COLLECT = !IS_COLLECT;
 			focus();
 			break;
-		case R.id.tv_offer:
-			Bundle bundle = new Bundle();
-			bundle.putString("company", unit.getCompany());
-			bundle.putString("id", unit.getCompanyId());
-			new IntentToOther(ExhibitionDetailActivity.this,
-					ExhibitionCompanyActivity.class, bundle);
-			break;
-		case R.id.tv_share:
-
-			break;
-		case R.id.btn_submit:
-			post();
-			break;
 		default:
 			break;
 		}
@@ -313,9 +294,9 @@ public class ExhibitionDetailActivity extends Activity implements
 			if (focusTask == null) {
 				focusTask = new FocusTask();
 				if (IS_COLLECT) {
-					focusTask.execute("add_attention_product_my");
+					focusTask.execute("add_attention_gallery");
 				} else {
-					focusTask.execute("cancel_attention_product_my");
+					focusTask.execute("cancel_attention_gallery");
 				}
 			}
 		} else {
@@ -335,18 +316,16 @@ public class ExhibitionDetailActivity extends Activity implements
 		iv_photo.setLayoutParams(layoutParams);
 		mImageLoader.DisplayImage(unit.getThumb(), iv_photo, false);
 		tv_name.setText(unit.getTitle());
-		tv_company.setText(unit.getCompany());
-		tv_offer.setText(getString(R.string.tv_exhibition_offer).replace(
-				"$message$", unit.getCompany()));
+		tv_date.setText(unit.getUpdatetime());
 		mWebView.loadDataWithBaseURL("", unit.getIntroduce(), "text/html",
 				"utf-8", null);
-		ExperDetailListAdapter adapter = new ExperDetailListAdapter<String>(
-				this, unit.getCaselist());
-		listView.setAdapter(adapter);
-		if (unit.getCaselist().size() == 0) {
-			tv_case.setVisibility(View.GONE);
+		ExperDetailGVAdapter adapter = new ExperDetailGVAdapter<ExhibitionUnit>(
+				this, unit.getProducts(), dm.widthPixels / 21 * 8);
+		gridView.setAdapter(adapter);
+		if (unit.getProducts().size() == 0) {
+			tv_product.setVisibility(View.GONE);
 		} else {
-			tv_case.setVisibility(View.VISIBLE);
+			tv_product.setVisibility(View.VISIBLE);
 		}
 		if (IS_COLLECT) {
 			tv_collect.setCompoundDrawablesWithIntrinsicBounds(
@@ -372,48 +351,6 @@ public class ExhibitionDetailActivity extends Activity implements
 		} else {
 			comFunction.toastMsg(getString(R.string.toast_net_link), this);
 		}
-	}
-
-	/***
-	 * 采购咨询操作
-	 */
-	private void post() {
-		if (check()) {
-			if (comFunction.isWiFi_3G(this)) {
-				if (postTask == null) {
-					postTask = new PostTask();
-					postTask.execute();
-				}
-			} else {
-				comFunction.toastMsg(getString(R.string.toast_net_link), this);
-			}
-		}
-	}
-
-	/***
-	 * 采购咨询提交合法性检测
-	 * 
-	 * @return true：表示合法 false：表示不合法
-	 */
-	private boolean check() {
-		if (comFunction.isNullorSpace(iSPreferences.getSp().getString(
-				"memberId", ""))) {
-			comFunction.toastMsg("请先登录！", this);
-			return false;
-		}
-		if (comFunction.isNullorSpace(edt_phone.getText().toString())) {
-			comFunction.toastMsg(getString(R.string.toast_resgiter_phone_null), this);
-			return false;
-		}
-		if (!comFunction.isMobile(edt_phone.getText().toString())) {
-			comFunction.toastMsg(getString(R.string.toast_resgiter_phone), this);
-			return false;
-		}
-		if (comFunction.isNullorSpace(edt_context.getText().toString())) {
-			comFunction.toastMsg("请输入咨询内容！", this);
-			return false;
-		}
-		return true;
 	}
 
 	/***
@@ -448,7 +385,7 @@ public class ExhibitionDetailActivity extends Activity implements
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			ll_bodyer.setVisibility(View.GONE);
-			pd = new ProgressDialog(ExhibitionDetailActivity.this);
+			pd = new ProgressDialog(PestDetailActivity.this);
 			pd.setIndeterminate(true);
 			pd.setCancelable(true);
 			pd.setMessage(getString(R.string.pd_data_link));
@@ -461,8 +398,8 @@ public class ExhibitionDetailActivity extends Activity implements
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
 			String requery = comFunction.getDataFromServer(
-					"get_shop_product_detail", paramsList,
-					ExhibitionDetailActivity.this);
+					"get_gallery_detail", paramsList,
+					PestDetailActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
@@ -477,13 +414,12 @@ public class ExhibitionDetailActivity extends Activity implements
 						return null;
 					}
 					state = jobj_data.getString("status");
-					unit = new ExhibitionUnit();
+					unit = new PestUnit();
 					unit.setId(jobj_data.getString("id"));
 					unit.setTitle(jobj_data.getString("title"));
-					unit.setCompany(jobj_data.getString("companyname"));
 					unit.setIntroduce(jobj_data.getString("introduce"));
 					unit.setThumb(jobj_data.getString("thumb"));
-					unit.setCompanyId(jobj_data.getString("userid"));
+					unit.setUpdatetime(jobj_data.getString("updatetime"));
 					JSONArray jarry_pic = new JSONArray(
 							jobj_data.getString("pic_urls"));
 					List<String> pic_urls = new ArrayList<String>();
@@ -492,14 +428,17 @@ public class ExhibitionDetailActivity extends Activity implements
 								.getString("url"));
 					}
 					unit.setPic_urls(pic_urls);
-					JSONArray jarry_case = new JSONArray(
-							jobj_data.getString("caselist"));
-					List<String> caselist = new ArrayList<String>();
-					for (int i = 0; i < jarry_case.length(); i++) {
-						caselist.add(jarry_case.getJSONObject(i).getString(
-								"title"));
+					JSONArray jarry_product = new JSONArray(
+							jobj_data.getString("products"));
+					List<ExhibitionUnit> list = new ArrayList<ExhibitionUnit>();
+					for (int i = 0; i < jarry_product.length(); i++) {
+						ExhibitionUnit pUnit = new ExhibitionUnit();
+						pUnit.setId(jarry_product.getJSONObject(i).getString("id"));
+						pUnit.setTitle(jarry_product.getJSONObject(i).getString("title"));
+						pUnit.setThumb(jarry_product.getJSONObject(i).getString("pic_url"));
+						list.add(pUnit);
 					}
-					unit.setCaselist(caselist);
+					unit.setProducts(list);
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -523,11 +462,11 @@ public class ExhibitionDetailActivity extends Activity implements
 					ll_bodyer.setVisibility(View.VISIBLE);
 				} else {
 					comFunction
-							.toastMsg(message, ExhibitionDetailActivity.this);
+							.toastMsg(message, PestDetailActivity.this);
 				}
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						ExhibitionDetailActivity.this);
+						PestDetailActivity.this);
 			}
 			if (pd.isShowing()) {
 				pd.dismiss();
@@ -562,13 +501,13 @@ public class ExhibitionDetailActivity extends Activity implements
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			pd = new ProgressDialog(ExhibitionDetailActivity.this);
+			pd = new ProgressDialog(PestDetailActivity.this);
 			pd.setIndeterminate(true);
 			pd.setCancelable(true);
 			pd.setMessage(getString(R.string.pd_data_upload));
 			pd.show();
 			paramsList = new ArrayList<NameValuePair>();
-			paramsList.add(new BasicNameValuePair("productId", id));
+			paramsList.add(new BasicNameValuePair("Id", id));
 			paramsList.add(new BasicNameValuePair("userId", iSPreferences
 					.getSp().getString("memberId", "")));
 		}
@@ -577,7 +516,7 @@ public class ExhibitionDetailActivity extends Activity implements
 		protected Void doInBackground(String... parms) {
 			// TODO Auto-generated method stub
 			String requery = comFunction.getDataFromServer(parms[0],
-					paramsList, ExhibitionDetailActivity.this);
+					paramsList, PestDetailActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
@@ -617,96 +556,13 @@ public class ExhibitionDetailActivity extends Activity implements
 					tv_collect.setTextColor(getResources().getColor(
 							R.color.gray));
 				}
-				comFunction.toastMsg(message, ExhibitionDetailActivity.this);
+				comFunction.toastMsg(message, PestDetailActivity.this);
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						ExhibitionDetailActivity.this);
+						PestDetailActivity.this);
 			}
 			super.onPostExecute(result);
 		}
-	}
-
-	/***
-	 * 采购咨询异步
-	 * 
-	 * @author LinYuLing
-	 * 
-	 */
-	private class PostTask extends AsyncTask<String, Void, Void> {
-		/***
-		 * 等待进度框
-		 */
-		private ProgressDialog pd;
-		private JSONObject jobj;
-		private List<NameValuePair> paramsList;
-		/***
-		 * 服务器返回类型值 200：成功 服务器返回类型值 500：失败
-		 */
-		private String code;
-		/***
-		 * 服务器返回提示内容值
-		 */
-		private String message = null;
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-			pd = new ProgressDialog(ExhibitionDetailActivity.this);
-			pd.setIndeterminate(true);
-			pd.setCancelable(true);
-			pd.setMessage(getString(R.string.pd_data_upload));
-			pd.show();
-			paramsList = new ArrayList<NameValuePair>();
-			paramsList.add(new BasicNameValuePair("Id", id));
-			paramsList.add(new BasicNameValuePair("userId", iSPreferences
-					.getSp().getString("memberId", "")));
-			paramsList.add(new BasicNameValuePair("content", edt_context
-					.getText().toString()));
-			paramsList.add(new BasicNameValuePair("mobile", edt_phone.getText()
-					.toString()));
-		}
-
-		@Override
-		protected Void doInBackground(String... parms) {
-			// TODO Auto-generated method stub
-			String requery = comFunction.getDataFromServer("add_shop_product_guestbook",
-					paramsList, ExhibitionDetailActivity.this);
-			System.out.println("requery: " + requery);
-			try {
-				jobj = new JSONObject(requery);
-				if (jobj == null) {
-					return null;
-				}
-				code = jobj.getString("code");
-				message = jobj.getString("message");
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			// TODO Auto-generated method stub
-			postTask = null;
-			if (pd.isShowing()) {
-				pd.dismiss();
-			}
-			if (message != null) {
-				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
-					edt_phone.setText("");
-					edt_context.setText("");
-				}
-				comFunction.toastMsg(message, ExhibitionDetailActivity.this);
-			} else {
-				comFunction.toastMsg(getString(R.string.toast_net_link),
-						ExhibitionDetailActivity.this);
-			}
-			super.onPostExecute(result);
-		}
-
 	}
 
 }

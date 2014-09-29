@@ -15,6 +15,7 @@ import com.innouni.yinongbao.R;
 import com.innouni.yinongbao.cache.ImageLoader;
 import com.innouni.yinongbao.unit.exhibition.ExhibitionUnit;
 import com.innouni.yinongbao.unit.exper.ExperCompanyUnit;
+import com.innouni.yinongbao.unit.pest.PestUnit;
 
 /***
  * gridview图片适配器
@@ -80,6 +81,10 @@ public class ExperDetailGVAdapter<T> extends BaseAdapter {
 			mImageLoader.DisplayImage(((ExhibitionUnit) list.get(position)).getThumb(), mImageView,
 				false);
 			mTextView.setText(((ExhibitionUnit) list.get(position)).getTitle());
+		} else if (list.get(position) instanceof PestUnit) {
+			mImageLoader.DisplayImage(((PestUnit) list.get(position)).getThumb(), mImageView,
+					false);
+				mTextView.setText(((PestUnit) list.get(position)).getTitle());
 		}
 		return convertView;
 	}

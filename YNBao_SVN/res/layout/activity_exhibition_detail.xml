@@ -107,6 +107,7 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/tv_case"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_exper_detail_label"

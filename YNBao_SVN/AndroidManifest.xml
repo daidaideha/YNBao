@@ -148,6 +148,21 @@
             android:name="com.innouni.yinongbao.activity.exhibition.ExhibitionCompanyDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        
+        <!-- the pest activity -->
+        <activity
+            android:name="com.innouni.yinongbao.activity.pest.PestActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.innouni.yinongbao.activity.pest.PestTypeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.innouni.yinongbao.activity.pest.PestDetailActivity"
+            android:launchMode="standard"
+            android:screenOrientation="portrait" />
 
         <!-- the person activity -->
         <activity

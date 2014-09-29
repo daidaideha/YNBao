@@ -1,4 +1,4 @@
-package com.innouni.yinongbao.activity.exhibition;
+package com.innouni.yinongbao.activity.pest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,21 +39,21 @@ import com.innouni.yinongbao.adapter.ExhibitionMainAdapter;
 import com.innouni.yinongbao.cache.ImageLoader;
 import com.innouni.yinongbao.unit.AdUnit;
 import com.innouni.yinongbao.unit.HttpCode;
-import com.innouni.yinongbao.unit.exhibition.ExhibitionMainUnit;
 import com.innouni.yinongbao.unit.exhibition.ExhibitionTypeCUnit;
 import com.innouni.yinongbao.unit.exhibition.ExhibitionTypeUnit;
-import com.innouni.yinongbao.unit.exhibition.ExhibitionUnit;
+import com.innouni.yinongbao.unit.pest.PestMainUnit;
+import com.innouni.yinongbao.unit.pest.PestUnit;
 import com.innouni.yinongbao.view.PopExhibitionType;
 import com.innouni.yinongbao.view.PopExhibitionType.OnMyItemClickListener;
 import com.innouni.yinongbao.widget.IntentToOther;
 import com.innouni.yinongbao.widget.comFunction;
 
 /***
- * 农资展厅主界面
+ * 害虫图库主界面
  * @author LinYuLing
- * @UpdateDate 2014-09-27
+ * @UpdateDate 2014-09-30
  */
-public class ExhibitionActivity extends Activity implements OnClickListener,
+public class PestActivity extends Activity implements OnClickListener,
 		OnMyItemClickListener {
 	/***
 	 * 头部返回按钮
@@ -87,15 +87,15 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 	 * 轮播图底部圈圈布局控件
 	 */
 	private LinearLayout ll_vp_bottom;
-	/***
-	 * 分类弹出框
-	 */
-	private PopExhibitionType popType;
+//	/***
+//	 * 分类弹出框
+//	 */
+//	private PopExhibitionType popType;
 	
 	/***
 	 * 数据适配器
 	 */
-	private ExhibitionMainAdapter<ExhibitionMainUnit> adapter;
+	private ExhibitionMainAdapter<PestMainUnit> adapter;
 	/***
 	 * 图片加载工具类
 	 */
@@ -112,15 +112,15 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 	/***
 	 * 初始化数据列表
 	 */
-	private List<ExhibitionMainUnit> list_bak;
+	private List<PestMainUnit> list_bak;
 	/***
 	 * 数据列表
 	 */
-	private List<ExhibitionMainUnit> list_data;
-	/***
-	 * 分类数据列表
-	 */
-	private List<ExhibitionTypeUnit> list_type;
+	private List<PestMainUnit> list_data;
+//	/***
+//	 * 分类数据列表
+//	 */
+//	private List<ExhibitionTypeUnit> list_type;
 	/***
 	 * 轮播图当前选中项
 	 */
@@ -157,14 +157,15 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		initData();
 		initHeader();
 		initBodyer();
-		getType();
+//		getType();
+		getAD();
 	}
 	
 	/***
 	 * 数据初始化
 	 */
 	private void initData() {
-		pd = new ProgressDialog(ExhibitionActivity.this);
+		pd = new ProgressDialog(PestActivity.this);
 		pd.setMessage(getString(R.string.pd_data_link));
 		pd.setIndeterminate(true);
 		pd.setCancelable(true);
@@ -172,9 +173,9 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		mImageLoader = new ImageLoader(this);
 		list_bottom = new ArrayList<ImageView>();
-		list_bak = new ArrayList<ExhibitionMainUnit>();
-		list_data = new ArrayList<ExhibitionMainUnit>();
-		list_type = new ArrayList<ExhibitionTypeUnit>();
+		list_bak = new ArrayList<PestMainUnit>();
+		list_data = new ArrayList<PestMainUnit>();
+//		list_type = new ArrayList<ExhibitionTypeUnit>();
 		list_ad = new ArrayList<AdUnit>();
 		pageViews = new ArrayList<ImageView>();
 	}
@@ -186,7 +187,7 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		rl_back = (RelativeLayout) findViewById(R.id.rl_header_back);
 		tv_title = (TextView) findViewById(R.id.tv_header_title);
 
-		tv_title.setText(getString(R.string.tv_header_exhibition));
+		tv_title.setText(getString(R.string.tv_header_pest));
 		rl_back.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -208,8 +209,7 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		mViewPager = (ViewPager) headview.findViewById(R.id.viewpager_main);
 		ll_vp_bottom = (LinearLayout) headview.findViewById(R.id.ll_vp_bottom);
 		listView.addHeaderView(headview);
-		adapter = new ExhibitionMainAdapter<ExhibitionMainUnit>(
-				this, list_bak, dm.widthPixels / 21 * 8);
+		adapter = new ExhibitionMainAdapter<PestMainUnit>(this, list_bak, dm.widthPixels / 21 * 8);
 		listView.setAdapter(adapter);
 		 
 		edt_search.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
@@ -223,8 +223,8 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 					Bundle bundle = new Bundle();
 					bundle.putInt("type", 1);
 					bundle.putString("search", edt_search.getText().toString());
-					new IntentToOther(ExhibitionActivity.this, 
-							ExhibitionTypeActivity.class, bundle);
+					new IntentToOther(PestActivity.this, 
+							PestTypeActivity.class, bundle);
 					edt_search.setText("");
 				}
 				return false;
@@ -274,20 +274,20 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		if (popType != null) {
-			popType.showPopupWindow();
-		}
+//		if (popType != null) {
+//			popType.showPopupWindow();
+//		}
 	}
 
 	@Override
 	public void onMyItemClick(int pPosition, int cPosition) {
 		// TODO Auto-generated method stub
-		popType.showPopupWindow();
-		Bundle bundle = new Bundle();
-		bundle.putString("id", list_type.get(pPosition).getC_types()
-				.get(cPosition).getCatid());
-		new IntentToOther(ExhibitionActivity.this, 
-				ExhibitionTypeActivity.class, bundle);
+//		popType.showPopupWindow();
+//		Bundle bundle = new Bundle();
+//		bundle.putString("id", list_type.get(pPosition).getC_types()
+//				.get(cPosition).getCatid());
+//		new IntentToOther(PestActivity.this, 
+//				ExhibitionTypeActivity.class, bundle);
 	}
 
 	/***
@@ -350,6 +350,20 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 	}
 
 	/***
+	 * 获取广告图片
+	 */
+	private void getAD() {
+		if (comFunction.isWiFi_3G(this)) {
+			if (getDataTask == null) {
+				getADTask = new GetADTask();
+				getADTask.execute();
+			}
+		} else {
+			comFunction.toastMsg(getString(R.string.toast_net_link), this);
+		}
+	}
+
+	/***
 	 * viewpager适配器
 	 * 
 	 * @author LinYuLing
@@ -387,7 +401,7 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 					Bundle bundle = new Bundle();
 					bundle.putString("title", list_ad.get(pos).getName());
 					bundle.putString("linkurl", list_ad.get(pos).getLinkUrl());
-					new IntentToOther(ExhibitionActivity.this, AdDetailActivity.class, bundle);
+					new IntentToOther(PestActivity.this, AdDetailActivity.class, bundle);
 				}
 			});
 			return pageViews.get(arg1);
@@ -430,8 +444,8 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
-			String requery = comFunction.getDataFromServer("get_shop_index", 
-					paramsList, ExhibitionActivity.this);
+			String requery = comFunction.getDataFromServer("get_gallery_index", 
+					paramsList, PestActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
@@ -445,18 +459,18 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 					if (jArray_data == null) {
 						return null;
 					}
-					ExhibitionMainUnit unit = null;
-					ExhibitionUnit unit_p = null;
-					List<ExhibitionUnit> list = null;
+					PestMainUnit unit = null;
+					PestUnit unit_p = null;
+					List<PestUnit> list = null;
 					for (int i = 0; i < jArray_data.length(); i++) {
-						unit = new ExhibitionMainUnit();
-						unit.setCatId(jArray_data.getJSONObject(i).getString("catId"));
-						unit.setCatName(jArray_data.getJSONObject(i).getString("catName"));
+						unit = new PestMainUnit();
+						unit.setCatId(jArray_data.getJSONObject(i).getString("catid"));
+						unit.setCatName(jArray_data.getJSONObject(i).getString("catname"));
 						JSONArray jArray_p = new JSONArray(jArray_data.getJSONObject(i)
 								.getString("picturelist"));
-						list = new ArrayList<ExhibitionUnit>();
+						list = new ArrayList<PestUnit>();
 						for (int j = 0; j < jArray_p.length(); j++) {
-							unit_p = new ExhibitionUnit();
+							unit_p = new PestUnit();
 							unit_p.setId(jArray_p.getJSONObject(j).getString("id"));
 							unit_p.setThumb(jArray_p.getJSONObject(j).getString("thumb"));
 							unit_p.setTitle(jArray_p.getJSONObject(j).getString("title"));
@@ -483,11 +497,11 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 					adapter.setList(list_data);
 					adapter.notifyDataSetChanged();
 				} else {
-					comFunction.toastMsg(message, ExhibitionActivity.this);
+					comFunction.toastMsg(message, PestActivity.this);
 				}
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						ExhibitionActivity.this);
+						PestActivity.this);
 			}
 			if (pd.isShowing()) {
 				pd.dismiss();
@@ -529,7 +543,7 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
 			String requery = comFunction.getDataFromServer("get_shop_menu", paramsList,
-					ExhibitionActivity.this);
+					PestActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
@@ -543,22 +557,22 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 					if (jobj_data == null) {
 						return null;
 					}
-					ExhibitionTypeUnit unit = null;
-					for (int i = 0; i < jobj_data.length(); i++) {
-						unit = new ExhibitionTypeUnit();
-						unit.setCatId(jobj_data.getJSONObject(i).getString("catId"));
-						unit.setCatName(jobj_data.getJSONObject(i).getString("catName"));
-						jArray_child = new JSONArray(jobj_data.getJSONObject(i).getString("c_types"));
-						List<ExhibitionTypeCUnit> list = new ArrayList<ExhibitionTypeCUnit>();
-						for (int j = 0; j < jArray_child.length(); j++) {
-							ExhibitionTypeCUnit cUnit = new ExhibitionTypeCUnit();
-							cUnit.setCatid(jArray_child.getJSONObject(j).getString("catid"));
-							cUnit.setCatname(jArray_child.getJSONObject(j).getString("catname"));
-							list.add(cUnit);
-						}
-						unit.setC_types(list);
-						list_type.add(unit);
-					}
+//					ExhibitionTypeUnit unit = null;
+//					for (int i = 0; i < jobj_data.length(); i++) {
+//						unit = new ExhibitionTypeUnit();
+//						unit.setCatId(jobj_data.getJSONObject(i).getString("catId"));
+//						unit.setCatName(jobj_data.getJSONObject(i).getString("catName"));
+//						jArray_child = new JSONArray(jobj_data.getJSONObject(i).getString("c_types"));
+//						List<ExhibitionTypeCUnit> list = new ArrayList<ExhibitionTypeCUnit>();
+//						for (int j = 0; j < jArray_child.length(); j++) {
+//							ExhibitionTypeCUnit cUnit = new ExhibitionTypeCUnit();
+//							cUnit.setCatid(jArray_child.getJSONObject(j).getString("catid"));
+//							cUnit.setCatname(jArray_child.getJSONObject(j).getString("catname"));
+//							list.add(cUnit);
+//						}
+//						unit.setC_types(list);
+//						list_type.add(unit);
+//					}
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -573,32 +587,18 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 			getDataTask = null;
 			if (message != null) {
 				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
-					popType = new PopExhibitionType(ExhibitionActivity.this, list_type, 
-							btn_menu, dm.widthPixels, dm.heightPixels / 5 * 4);
-					popType.setOnMyItemClickListener(ExhibitionActivity.this);
+//					popType = new PopExhibitionType(PestActivity.this, list_type, 
+//							btn_menu, dm.widthPixels, dm.heightPixels / 5 * 4);
+//					popType.setOnMyItemClickListener(PestActivity.this);
 				} else {
-					comFunction.toastMsg(message, ExhibitionActivity.this);
+					comFunction.toastMsg(message, PestActivity.this);
 				}
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						ExhibitionActivity.this);
+						PestActivity.this);
 			}
 			getAD();
 			super.onPostExecute(result);
-		}
-	}
-
-	/***
-	 * 获取广告图片
-	 */
-	private void getAD() {
-		if (comFunction.isWiFi_3G(this)) {
-			if (getDataTask == null) {
-				getADTask = new GetADTask();
-				getADTask.execute();
-			}
-		} else {
-			comFunction.toastMsg(getString(R.string.toast_net_link), this);
 		}
 	}
 
@@ -630,14 +630,14 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			paramsList = new ArrayList<NameValuePair>();
-			paramsList.add(new BasicNameValuePair("spaceId", "102"));
+			paramsList.add(new BasicNameValuePair("spaceId", "101"));
 		}
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
 			String requery = comFunction.getDataFromServer("ynb_ad_index",
-					paramsList, ExhibitionActivity.this);
+					paramsList, PestActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
@@ -678,11 +678,11 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
 					initPVData();
 				} else {
-					comFunction.toastMsg(message, ExhibitionActivity.this);
+					comFunction.toastMsg(message, PestActivity.this);
 				}
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						ExhibitionActivity.this);
+						PestActivity.this);
 			}
 			getData();
 		}
