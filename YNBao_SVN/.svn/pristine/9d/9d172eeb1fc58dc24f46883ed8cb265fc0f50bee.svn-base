@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/view_header" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="@null" >
+
+        <LinearLayout
+            android:id="@+id/ll_bodyer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- 专家简介 -->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="5sp"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
+                android:paddingTop="5sp" >
+
+                <ImageView
+                    android:id="@+id/iv_exper_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15sp"
+                    android:layout_toRightOf="@+id/iv_exper_photo"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/tv_exper_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5sp"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/tv_exper_level"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5sp"
+                            android:textColor="@color/blue"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_exper_company"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_exper_context"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:ellipsize="end"
+                        android:lines="4"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/line_ask_top"
+                android:contentDescription="@null" />
+
+            <!-- 作物 -->
+
+            <TextView
+                android:id="@+id/tv_exper_crop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="10sp"
+                android:text="@string/label_exper_detail_crop"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/line_ask_top"
+                android:contentDescription="@null" />
+
+            <!-- 地区 -->
+
+            <TextView
+                android:id="@+id/tv_exper_adderss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="10sp"
+                android:text="@string/label_exper_detail_address"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/line_ask_top"
+                android:contentDescription="@null" />
+
+            <!-- 回复 关注 -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:padding="10sp"
+                android:weightSum="3" >
+
+                <TextView
+                    android:id="@+id/tv_exper_replay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/label_exper_detail_replay"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_exper_focus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/label_exper_detail_focus"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/line_ask_top"
+                android:contentDescription="@null" />
+
+            <!-- 关注 我要问 咨询 -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:weightSum="3" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10sp"
+                    android:paddingTop="10sp" >
+
+                    <TextView
+                        android:id="@+id/tv_exper_tab_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/icon_exper_fouce_hover"
+                        android:drawablePadding="5sp"
+                        android:gravity="center"
+                        android:text="@string/tv_exper_detail_tab_focus"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/line_exper_vertical"
+                    android:contentDescription="@null" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10sp"
+                    android:paddingTop="10sp" >
+
+                    <TextView
+                        android:id="@+id/tv_exper_tab_middle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/icon_exper_ask"
+                        android:drawablePadding="5sp"
+                        android:gravity="center"
+                        android:text="@string/tv_header_ask"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/line_exper_vertical"
+                    android:contentDescription="@null" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10sp"
+                    android:paddingTop="10sp" >
+
+                    <TextView
+                        android:id="@+id/tv_exper_tab_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/icon_exper_phone"
+                        android:drawablePadding="5sp"
+                        android:gravity="center"
+                        android:text="@string/tv_exper_detail_tab_phone"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/line_ask_top"
+                android:contentDescription="@null" />
+
+            <!-- 个人简介 -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_exper_detail_label"
+                android:gravity="center_vertical"
+                android:paddingLeft="10sp"
+                android:text="@string/label_exper_detail_context"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_exper_person_context"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:padding="10sp"
+                android:textSize="14sp" />
+
+            <!-- 回答列表 -->
+
+            <TextView
+                android:id="@+id/label_exper_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_exper_detail_label"
+                android:drawableRight="@drawable/icon_exper_label_right"
+                android:gravity="center_vertical"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
+                android:text="@string/label_exper_detail_question"
+                android:textSize="16sp" />
+
+            <com.innouni.yinongbao.view.MyListView
+                android:id="@+id/list_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- 技术列表 -->
+
+            <TextView
+                android:id="@+id/label_exper_technology"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_exper_detail_label"
+                android:drawableRight="@drawable/icon_exper_label_right"
+                android:gravity="center_vertical"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
+                android:text="@string/label_exper_detail_technology"
+                android:textSize="16sp" />
+
+            <com.innouni.yinongbao.view.MyListView
+                android:id="@+id/list_technology"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- 关联企业 -->
+
+            <TextView
+                android:id="@+id/label_exper_company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_exper_detail_label"
+                android:drawableRight="@drawable/icon_exper_label_right"
+                android:gravity="center_vertical"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
+                android:text="@string/label_exper_detail_relate"
+                android:textSize="16sp" />
+
+            <com.innouni.yinongbao.view.MyGridView
+                android:id="@+id/gv_company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="3"
+                android:padding="10sp"
+                android:horizontalSpacing="10sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

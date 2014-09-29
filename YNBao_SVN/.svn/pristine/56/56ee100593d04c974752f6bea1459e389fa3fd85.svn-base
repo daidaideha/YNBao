@@ -1,0 +1,137 @@
+package com.innouni.yinongbao.activity.konwledge;
+
+import com.innouni.yinongbao.R;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+/***
+ * 知识库主界面
+ * 
+ * @author LinYuLing
+ * @UpdateDate 2014-09-25
+ */
+public class KonwledgeActivity extends Activity implements OnClickListener {
+	/***
+	 * 头部返回按钮
+	 */
+	private RelativeLayout rl_back;
+	/***
+	 * 头部标题控件
+	 */
+	private TextView tv_title;
+	/***
+	 * 菜单按钮
+	 */
+	private Button btn_menu;
+	/***
+	 * 搜索框
+	 */
+	private EditText edt_search;
+	/***
+	 * tv_tab_left：全部 tv_tab_middle：浏览量 tv_tab_right：回复量
+	 */
+	private TextView tv_tab_left, tv_tab_middle, tv_tab_right;
+	/***
+	 * 数据展示列表控件
+	 */
+	private ListView listView;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_konwledge_main);
+
+		initHeader();
+		initBodyer();
+	}
+
+	/***
+	 * 初始化头部控件
+	 */
+	private void initHeader() {
+		rl_back = (RelativeLayout) findViewById(R.id.rl_header_back);
+		tv_title = (TextView) findViewById(R.id.tv_header_title);
+
+		tv_title.setText(getString(R.string.tv_header_konwledge));
+		rl_back.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
+	}
+
+	/***
+	 * 初始化布局控件
+	 */
+	private void initBodyer() {
+		btn_menu = (Button) findViewById(R.id.btn_menu);
+		edt_search = (EditText) findViewById(R.id.edt_search);
+		tv_tab_left = (TextView) findViewById(R.id.tv_tab_left);
+		tv_tab_middle = (TextView) findViewById(R.id.tv_tab_middle);
+		tv_tab_right = (TextView) findViewById(R.id.tv_tab_right);
+		listView = (ListView) findViewById(R.id.listview);
+
+		btn_menu.setOnClickListener(this);
+		tv_tab_left.setOnClickListener(this);
+		tv_tab_middle.setOnClickListener(this);
+		tv_tab_right.setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		if (v.getId() == R.id.btn_menu) {
+
+		} else {
+			checked(v.getId());
+			switch (v.getId()) {
+			case R.id.tv_tab_left:
+				
+				break;
+			case R.id.tv_tab_middle:
+				
+				break;
+			case R.id.tv_tab_right:
+				
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	/***
+	 * 判断选中项
+	 */
+	private void checked(int id) {
+		if (id == R.id.tv_tab_left) {
+			tv_tab_left.setTextColor(getResources().getColor(R.color.blue));
+		} else {
+			tv_tab_left.setTextColor(Color.BLACK);
+		}
+		if (id == R.id.tv_tab_middle) {
+			tv_tab_middle.setTextColor(getResources().getColor(R.color.blue));
+		} else {
+			tv_tab_middle.setTextColor(Color.BLACK);
+		}
+		if (id == R.id.tv_tab_right) {
+			tv_tab_right.setTextColor(getResources().getColor(R.color.blue));
+		} else {
+			tv_tab_right.setTextColor(Color.BLACK);
+		}
+	}
+
+}

@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_person_header"
+        android:orientation="vertical"
+        android:weightSum="12" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:paddingLeft="30sp"
+            android:paddingRight="30sp" >
+
+            <ImageView
+                android:id="@+id/iv_person_photo"
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5sp"
+                android:contentDescription="@null" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5sp"
+                android:layout_toRightOf="@+id/iv_person_photo"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tv_person_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@android:color/white" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10sp"
+                    android:layout_marginTop="10sp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/tv_person_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/icon_person_normal"
+                        android:drawablePadding="5sp"
+                        android:textColor="@android:color/white" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_person_focus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/tv_person_focus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15sp"
+                            android:text="@string/tv_person_focus"
+                            android:textColor="@android:color/white" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/tv_person_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tv_person_number"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/tv_person_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20sp"
+                        android:text="@string/tv_person_level"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/line_person_header_horizontal"
+            android:contentDescription="@null" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:paddingTop="5sp"
+            android:paddingBottom="5sp" >
+
+            <RelativeLayout
+                android:id="@+id/rl_person_information"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawablePadding="5sp"
+                    android:drawableTop="@drawable/icon_person_information"
+                    android:gravity="center"
+                    android:text="@string/tv_person_information"
+                    android:textColor="@android:color/white" />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/line_person_header_vertical"
+                android:contentDescription="@null" />
+
+            <RelativeLayout
+                android:id="@+id/rl_person_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawablePadding="5sp"
+                    android:drawableTop="@drawable/icon_person_video"
+                    android:gravity="center"
+                    android:text="@string/tv_person_video"
+                    android:textColor="@android:color/white" />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/line_person_header_vertical"
+                android:contentDescription="@null" />
+
+            <RelativeLayout
+                android:id="@+id/rl_person_group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawablePadding="5sp"
+                    android:drawableTop="@drawable/icon_person_group"
+                    android:gravity="center"
+                    android:text="@string/tv_person_group"
+                    android:textColor="@android:color/white" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_person_myask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:drawableRight="@drawable/icon_person_right"
+        android:paddingBottom="5sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="5sp"
+        android:text="@string/tv_person_myask" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line_ask_top"
+        android:contentDescription="@null" />
+
+    <RelativeLayout
+        android:id="@+id/rl_person_askme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:paddingBottom="5sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="5sp" >
+
+        <TextView
+            android:id="@+id/tv_person_askme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:text="@string/tv_person_askme" />
+
+        <TextView
+            android:id="@+id/tv_person_askme_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:layout_toRightOf="@+id/tv_person_askme"
+            android:background="@drawable/bg_person_askme_number"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/icon_person_right"
+            android:contentDescription="@null" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line_ask_top"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/tv_person_myreplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:drawableRight="@drawable/icon_person_right"
+        android:paddingBottom="5sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="5sp"
+        android:text="@string/tv_person_myreplay" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line_person_bodyer_horizontal"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/tv_person_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:drawableRight="@drawable/icon_person_right"
+        android:paddingBottom="5sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="5sp"
+        android:text="@string/tv_person_post" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line_ask_top"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/tv_person_collect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:drawableRight="@drawable/icon_person_right"
+        android:paddingBottom="5sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="5sp"
+        android:text="@string/tv_person_collect" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line_person_bodyer_horizontal"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/tv_person_help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:drawableRight="@drawable/icon_person_right"
+        android:paddingBottom="5sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="5sp"
+        android:text="@string/tv_person_help" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line_ask_top"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/tv_person_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:drawableRight="@drawable/icon_person_right"
+        android:paddingBottom="5sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="5sp"
+        android:text="@string/tv_person_feedback" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line_ask_top"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/tv_person_updatepwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:drawableRight="@drawable/icon_person_right"
+        android:paddingBottom="5sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="5sp"
+        android:text="@string/tv_person_updatepwd" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line_ask_top"
+        android:contentDescription="@null" />
+
+    <Button
+        android:id="@+id/btn_person_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20sp"
+        android:background="@drawable/btn_person_exit"
+        android:text="@string/btn_person_exit"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

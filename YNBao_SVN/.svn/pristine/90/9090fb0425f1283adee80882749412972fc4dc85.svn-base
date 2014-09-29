@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/white"
+    >
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+       	>
+
+        <android.support.v4.view.Viewpager
+            android:id="@+id/viewpager_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            />
+
+        <LinearLayout
+            android:layout_below="@id/viewpager_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/ibtn_main_firstfirst"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image_mainpage_ask" />
+
+                <ImageButton
+                    android:id="@+id/ibtn_main_firsttwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image_mainpage_expert" />
+
+                <ImageButton
+                    android:id="@+id/ibtn_main_firstthree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image_mainpage_knowledge" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/ibtn_main_secondone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image_mainpage_show" />
+
+                <ImageButton
+                    android:id="@+id/ibtn_main_secondtwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image_mainpage_insect" />
+
+                <ImageButton
+                    android:id="@+id/ibtn_main_secondthree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image_mainpage_video" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/ibtn_main_thirdone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image_mainpage_group" />
+
+                <ImageButton
+                    android:id="@+id/ibtn_main_thirdtwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image_mainpage_call" />
+
+                <ImageButton
+                    android:id="@+id/ibtn_main_thirdthree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/image_mainpage_add" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+    </ScrollView>
+    
+
+</LinearLayout>

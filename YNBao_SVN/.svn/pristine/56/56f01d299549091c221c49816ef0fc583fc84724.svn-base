@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_web_url">http://app.114nz.com/server/Index/</string>
+    <string name="app_sms_url">http://api.chanyoo.cn/utf8/interface/send_sms.aspx?</string>
+    <string name="app_sms_context">验证码：$number$,十分钟内有效【中农在线】</string>
+</resources>

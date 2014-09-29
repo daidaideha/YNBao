@@ -1,0 +1,285 @@
+package com.innouni.yinongbao.activity.expert;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.innouni.yinongbao.R;
+import com.innouni.yinongbao.adapter.ExperDetailListAdapter;
+import com.innouni.yinongbao.unit.ExperBlogUnit;
+import com.innouni.yinongbao.unit.ExperThreadUnit;
+import com.innouni.yinongbao.unit.HttpCode;
+import com.innouni.yinongbao.widget.IntentToOther;
+import com.innouni.yinongbao.widget.comFunction;
+
+/***
+ * 专家库回答、技术列表界面
+ * @author LinYuLing
+ * @UpdateDate 2014-09-25
+ */
+public class ExperListActivity extends Activity {
+	/***
+	 * 头部返回按钮
+	 */
+	private RelativeLayout rl_back;
+	/***
+	 * 头部标题控件
+	 */
+	private TextView tv_title;
+	/***
+	 * 展示列表
+	 */
+	private ListView mListView;
+	
+	/***
+	 * 数据列表适配器
+	 */
+	@SuppressWarnings("rawtypes")
+	private ExperDetailListAdapter adapter;
+	
+//	/***
+//	 * 初始化数据列表
+//	 */
+//	private List<Object> list_bak;
+	/***
+	 * 回答列表数据列表
+	 */
+	private List<ExperThreadUnit> list_thread;
+	/***
+	 * 技术列表数据列表
+	 */
+	private List<ExperBlogUnit> list_blog;
+	/***
+	 * 用来判断是回答列表还是技术列表
+	 * 0：表示回答列表
+	 * 1：表示技术列表
+	 */
+	private int type = 0;
+	/***
+	 * id
+	 */
+	private String id;
+	
+	/***
+	 * 获取数据异步
+	 */
+	private GetDataTask getDataTask;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_exper_list);
+//		list_bak = new ArrayList<Object>();
+		list_thread = new ArrayList<ExperThreadUnit>();
+		list_blog = new ArrayList<ExperBlogUnit>();
+		
+		try {
+			type = getIntent().getIntExtra("type", 0);
+			id = getIntent().getStringExtra("id");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		initHeader();
+		initBodyer();
+		getData();
+	}
+
+	/***
+	 * 初始化头部控件
+	 */
+	private void initHeader() {
+		rl_back = (RelativeLayout) findViewById(R.id.rl_header_back);
+		tv_title = (TextView) findViewById(R.id.tv_header_title);
+
+		if (type == 0) {
+			tv_title.setText(getString(R.string.label_exper_detail_question));
+		} else {
+			tv_title.setText(getString(R.string.label_exper_detail_technology));
+		}
+		rl_back.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
+	}
+
+	/***
+	 * 实例化控件
+	 */
+	private void initBodyer() {
+		mListView = (ListView) findViewById(R.id.listview);
+	}
+	
+	/***
+	 * 获取数据操作
+	 */
+	private void getData() {
+		if (comFunction.isWiFi_3G(this)) {
+			if (getDataTask == null) {
+				getDataTask = new GetDataTask();
+				getDataTask.execute();
+			}
+		} else {
+			comFunction.toastMsg(getString(R.string.toast_net_link), this);
+		}
+	}
+	
+	/***
+	 * 列表数据赋值
+	 */
+	private void initData() {
+		if (type == 0) {
+			adapter = new ExperDetailListAdapter<>(this, list_thread);
+		} else {
+			adapter = new ExperDetailListAdapter<>(this, list_blog);
+			mListView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						int position, long arg3) {
+					// TODO Auto-generated method stub
+					Bundle bundle = new Bundle();
+					bundle.putString("id", list_blog.get(position).getId());
+					new IntentToOther(ExperListActivity.this, 
+							ExperTechnologyDetailActivity.class, bundle);
+				}
+			});
+		}
+		mListView.setAdapter(adapter);
+	}
+
+	/***
+	 * 获取数据异步
+	 * 
+	 * @author LinYuLing
+	 * 
+	 */
+	private class GetDataTask extends AsyncTask<Void, Void, Void> {
+		/***
+		 * 等待进度框
+		 */
+		private ProgressDialog pd;
+		private JSONObject jobj;
+		private JSONArray jArray_exper_blog;
+		private JSONArray jArray_exper_thread;
+		private List<NameValuePair> paramsList;
+		/***
+		 * 服务器返回类型值 200：成功
+		 */
+		private String code;
+		/***
+		 * 服务器返回提示内容值
+		 */
+		private String message = null;
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			pd = new ProgressDialog(ExperListActivity.this);
+			pd.setIndeterminate(true);
+			pd.setCancelable(true);
+			pd.setMessage(getString(R.string.pd_data_link));
+			pd.show();
+			paramsList = new ArrayList<NameValuePair>();
+			paramsList.add(new BasicNameValuePair("Id", id));
+		}
+
+		@Override
+		protected Void doInBackground(Void... pragm) {
+			// TODO Auto-generated method stub
+			String requery = null;
+			if (type == 0) {
+				requery = comFunction.getDataFromServer("get_wen_expert_threadlist", 
+						paramsList, ExperListActivity.this);
+			} else {
+				requery = comFunction.getDataFromServer("get_wen_expert_bloglist", 
+						paramsList, ExperListActivity.this);
+			}
+			System.out.println("requery: " + requery);
+			try {
+				jobj = new JSONObject(requery);
+				if (jobj == null) {
+					return null;
+				}
+				code = jobj.getString("code");
+				message = jobj.getString("message");
+				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
+					if (type == 0) {
+						jArray_exper_thread = new JSONArray(jobj.getString("data"));
+						for (int j = 0; j < jArray_exper_thread.length(); j++) {
+							ExperThreadUnit threadUnit = new ExperThreadUnit();
+							threadUnit.setId(jArray_exper_thread.getJSONObject(j)
+									.getString("tid"));
+							threadUnit.setSubject(jArray_exper_thread
+									.getJSONObject(j).getString("subject"));
+							threadUnit.setAddtime(jArray_exper_thread
+									.getJSONObject(j).getString("addtime"));
+							list_thread.add(threadUnit);
+						}
+					} else {
+						jArray_exper_blog = new JSONArray(jobj.getString("data"));
+						for (int j = 0; j < jArray_exper_blog.length(); j++) {
+							ExperBlogUnit blogUnit = new ExperBlogUnit();
+							blogUnit.setId(jArray_exper_blog.getJSONObject(j)
+									.getString("id"));
+							blogUnit.setTitle(jArray_exper_blog.getJSONObject(j)
+									.getString("title"));
+							blogUnit.setType(jArray_exper_blog.getJSONObject(j)
+									.getString("type"));
+							blogUnit.setAddtime(jArray_exper_blog.getJSONObject(j)
+									.getString("addtime"));
+							list_blog.add(blogUnit);
+						}
+					}
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			getDataTask = null;
+			if (message != null) {
+				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
+					initData();
+				} else {
+					comFunction.toastMsg(message, ExperListActivity.this);
+				}
+			} else {
+				comFunction.toastMsg(getString(R.string.toast_net_link),
+						ExperListActivity.this);
+			}
+			if (pd.isShowing()) {
+				pd.dismiss();
+			}
+			super.onPostExecute(result);
+		}
+	}
+}

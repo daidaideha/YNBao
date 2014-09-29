@@ -1,0 +1,121 @@
+package com.innouni.yinongbao.unit.knowledge;
+
+import java.util.List;
+
+/***
+ * 知识库专家解答、评论回复实体类
+ * 
+ * @author LinYuLing
+ * @UpdateDate 2014-09-25
+ */
+public class KnowledgeAnswersUnit {
+	/***
+	 * id
+	 */
+	private String id;
+	/***
+	 * 用户名(评论显示用户名)
+	 */
+	private String author;
+	/***
+	 * 提交时间
+	 */
+	private String addtime;
+	/***
+	 * 评论内容
+	 */
+	private String content;
+	/***
+	 * 最优解
+	 */
+	private String isbest;
+	/***
+	 * 头像
+	 */
+	private String avatar;
+	/***
+	 * 用户名(评论显示用户名)
+	 */
+	private String name;
+	/***
+	 * 用户组
+	 */
+	private String groupname;
+	/***
+	 * 图片列表
+	 */
+	private List<String> urls;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getAddtime() {
+		return addtime;
+	}
+
+	public void setAddtime(String addtime) {
+		this.addtime = addtime;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getIsbest() {
+		return isbest;
+	}
+
+	public void setIsbest(String isbest) {
+		this.isbest = isbest;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getGroupname() {
+		return groupname;
+	}
+
+	public void setGroupname(String groupname) {
+		this.groupname = groupname;
+	}
+
+	public List<String> getUrls() {
+		return urls;
+	}
+
+	public void setUrls(List<String> urls) {
+		this.urls = urls;
+	}
+
+}

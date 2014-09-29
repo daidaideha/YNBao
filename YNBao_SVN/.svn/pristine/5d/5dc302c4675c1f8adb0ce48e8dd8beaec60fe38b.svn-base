@@ -1,0 +1,264 @@
+package com.innouni.yinongbao.activity.expert;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.innouni.yinongbao.R;
+import com.innouni.yinongbao.adapter.ExperAdapter;
+import com.innouni.yinongbao.unit.ExperUnit;
+import com.innouni.yinongbao.unit.HttpCode;
+import com.innouni.yinongbao.widget.IntentToOther;
+import com.innouni.yinongbao.widget.comFunction;
+
+/***
+ * 专家库首页界面
+ * 
+ * @author LinYuLing
+ * @UpdateDate 2014-09-23
+ */
+public class ExpertMainActivity extends Activity implements OnClickListener,
+		OnItemClickListener {
+	/***
+	 * 头部返回按钮
+	 */
+	private RelativeLayout rl_back;
+	/***
+	 * 头部标题控件
+	 */
+	private TextView tv_title;
+	/***
+	 * 搜索输入框
+	 */
+	private EditText edt_search;
+	/***
+	 * 筛选点击按钮
+	 */
+	private RelativeLayout rl_tab_left, rl_tab_middle, rl_tab_right;
+	/***
+	 * 数据展示列表控件
+	 */
+	private ListView listView;
+
+	/***
+	 * 初始展示列表数据列表
+	 */
+	private List<ExperUnit> list_bak;
+	/***
+	 * 展示列表数据列表
+	 */
+	private List<ExperUnit> list_data;
+
+	/***
+	 * 展示列表适配器
+	 */
+	private ExperAdapter adapter;
+
+	/***
+	 * 获取数据异步
+	 */
+	private GetDataTask getDataTask;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_exper_main);
+		list_bak = new ArrayList<ExperUnit>();
+		list_data = new ArrayList<ExperUnit>();
+
+		initHeader();
+		initBodyer();
+		getData();
+	}
+
+	/***
+	 * 初始化头部控件
+	 */
+	private void initHeader() {
+		rl_back = (RelativeLayout) findViewById(R.id.rl_header_back);
+		tv_title = (TextView) findViewById(R.id.tv_header_title);
+
+		tv_title.setText(getString(R.string.tv_header_exper));
+		rl_back.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
+	}
+
+	/***
+	 * 初始化布局控件
+	 */
+	private void initBodyer() {
+		edt_search = (EditText) findViewById(R.id.edt_exper_search);
+		rl_tab_left = (RelativeLayout) findViewById(R.id.rl_exper_left);
+		rl_tab_middle = (RelativeLayout) findViewById(R.id.rl_exper_middle);
+		rl_tab_right = (RelativeLayout) findViewById(R.id.rl_exper_right);
+		listView = (ListView) findViewById(R.id.list_exper);
+		adapter = new ExperAdapter(this, list_bak);
+		listView.setAdapter(adapter);
+
+		listView.setOnItemClickListener(this);
+		rl_tab_left.setOnClickListener(this);
+		rl_tab_middle.setOnClickListener(this);
+		rl_tab_right.setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.rl_exper_left:
+
+			break;
+		case R.id.rl_exper_middle:
+
+			break;
+		case R.id.rl_exper_right:
+
+			break;
+		default:
+			break;
+		}
+	}
+
+	/***
+	 * 获取数据操作
+	 */
+	private void getData() {
+		if (comFunction.isWiFi_3G(this)) {
+			if (getDataTask == null) {
+				getDataTask = new GetDataTask();
+				getDataTask.execute();
+			}
+		} else {
+			comFunction.toastMsg(getString(R.string.toast_net_link), this);
+		}
+	}
+
+	/***
+	 * 获取数据异步
+	 * 
+	 * @author LinYuLing
+	 * 
+	 */
+	private class GetDataTask extends AsyncTask<Void, Void, Void> {
+		private JSONObject jobj;
+		private JSONObject jobj_data;
+		private JSONArray jArray_exper;
+		private List<NameValuePair> paramsList;
+		/***
+		 * 服务器返回类型值 200：成功
+		 */
+		private String code;
+		/***
+		 * 服务器返回提示内容值
+		 */
+		private String message = null;
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			paramsList = new ArrayList<NameValuePair>();
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			// TODO Auto-generated method stub
+			String requery = comFunction.getDataFromServer(
+					"get_wen_expert_list", paramsList, ExpertMainActivity.this);
+			try {
+				jobj = new JSONObject(requery);
+				if (jobj == null) {
+					return null;
+				}
+				code = jobj.getString("code");
+				message = jobj.getString("message");
+				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
+					jobj_data = new JSONObject(jobj.getString("data"));
+					if (jobj_data == null) {
+						return null;
+					}
+					jArray_exper = new JSONArray(jobj_data.getString("experts"));
+					if (jArray_exper == null) {
+						return null;
+					}
+					ExperUnit unit = null;
+					for (int i = 0; i < jArray_exper.length(); i++) {
+						unit = new ExperUnit();
+						unit.setId(jArray_exper.getJSONObject(i)
+								.getString("id"));
+						unit.setUsername(jArray_exper.getJSONObject(i)
+								.getString("username"));
+						unit.setName(jArray_exper.getJSONObject(i).getString(
+								"name"));
+						unit.setPosition(jArray_exper.getJSONObject(i)
+								.getString("position"));
+						unit.setCompany(jArray_exper.getJSONObject(i)
+								.getString("company"));
+						unit.setAvatar(jArray_exper.getJSONObject(i).getString(
+								"avatar"));
+						unit.setMobile(jArray_exper.getJSONObject(i).getString(
+								"mobile"));
+						list_data.add(unit);
+					}
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			getDataTask = null;
+			if (message != null) {
+				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
+					adapter.clearList();
+					adapter.setList(list_data);
+					adapter.notifyDataSetChanged();
+				} else {
+					comFunction.toastMsg(message, ExpertMainActivity.this);
+				}
+			} else {
+				comFunction.toastMsg(getString(R.string.toast_net_link),
+						ExpertMainActivity.this);
+			}
+			super.onPostExecute(result);
+		}
+
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+			long arg3) {
+		// TODO Auto-generated method stub
+		Bundle bundle = new Bundle();
+		bundle.putString("id", list_data.get(position).getId());
+		new IntentToOther(ExpertMainActivity.this, ExperDetailActivity.class,
+				bundle);
+	}
+}

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="5sp"
+    android:paddingLeft="10sp" >
+
+    <RelativeLayout
+        android:id="@+id/rl_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="5sp" >
+
+        <ImageView
+            android:id="@+id/iv_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="5sp"
+        android:layout_toRightOf="@+id/rl_photo"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="5sp"
+        android:layout_toRightOf="@+id/rl_photo"
+        android:textColor="@color/gray"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_context"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_photo"
+        android:layout_marginRight="10sp"
+        android:layout_marginTop="10sp"
+        android:layout_toLeftOf="@+id/iv_best"
+        android:ellipsize="end"
+        android:gravity="left"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_context" >
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5sp"
+            android:text="@string/tv_konwledge_type"
+            android:textColor="@color/gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_look"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10sp"
+            android:layout_toLeftOf="@+id/tv_comments"
+            android:drawableLeft="@drawable/icon_exper_technology_look"
+            android:drawablePadding="3sp"
+            android:text="@string/tv_konwledge_look" />
+
+        <TextView
+            android:id="@+id/tv_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10sp"
+            android:drawableLeft="@drawable/icon_exper_technology_comment_hover"
+            android:drawablePadding="3sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/icon_konwledge_image"
+        android:contentDescription="@null" />
+
+    <ImageView
+        android:id="@+id/iv_blog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:layout_toLeftOf="@+id/iv_image"
+        android:background="@drawable/icon_konwledge_blog"
+        android:contentDescription="@null"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/iv_best"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rl_bottom"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/iv_blog"
+        android:layout_marginRight="50sp"
+        android:layout_marginTop="5sp"
+        android:background="@drawable/icon_konwledge_best"
+        android:contentDescription="@null" />
+
+</RelativeLayout>
