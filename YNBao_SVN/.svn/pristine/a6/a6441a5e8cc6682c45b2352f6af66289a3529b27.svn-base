@@ -1,7 +1,0 @@
-package com.innouni.yinongbao.fragment;
-
-import android.support.v4.app.Fragment;
-
-public class ContextFragment extends Fragment {
-
-}
