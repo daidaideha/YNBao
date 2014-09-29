@@ -1,0 +1,46 @@
+package com.innouni.yinongbao.unit;
+
+/***
+ * 专家库关联企业实体类
+ * @author LinYuLing
+ * @UpdateDate 2014-09-23
+ */
+public class ExperCompanyUnit {
+	/***
+	 * id
+	 */
+	private String userid;
+	/***
+	 * 企业名称
+	 */
+	private String companyname;
+	/***
+	 * 企业头像
+	 */
+	private String logo;
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+
+	public String getCompanyname() {
+		return companyname;
+	}
+
+	public void setCompanyname(String companyname) {
+		this.companyname = companyname;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+
+}

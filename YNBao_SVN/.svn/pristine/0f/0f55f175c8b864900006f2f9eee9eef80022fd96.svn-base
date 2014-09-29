@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/view_header" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_exper_search" >
+
+        <EditText
+            android:id="@+id/edt_exper_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:background="@drawable/edt_exper_search"
+            android:drawableRight="@drawable/icon_exper_search"
+            android:hint="@string/hint_exper_search"
+            android:paddingBottom="2sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:paddingTop="2sp"
+            android:textSize="14sp"
+            android:inputType="text" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:weightSum="3" >
+
+        <RelativeLayout
+            android:id="@+id/rl_exper_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="5sp"
+            android:paddingTop="5sp" >
+
+            <TextView
+                android:id="@+id/tv_exper_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawablePadding="5sp"
+                android:drawableRight="@drawable/icon_exper_tab"
+                android:text="@string/tv_exper_tab_left"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/line_exper_vertical"
+            android:contentDescription="@null" />
+
+        <RelativeLayout
+            android:id="@+id/rl_exper_middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="5sp"
+            android:paddingTop="5sp" >
+
+            <TextView
+                android:id="@+id/tv_exper_middle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawablePadding="5sp"
+                android:drawableRight="@drawable/icon_exper_tab"
+                android:text="@string/tv_exper_tab_middle"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/line_exper_vertical"
+            android:contentDescription="@null" />
+
+        <RelativeLayout
+            android:id="@+id/rl_exper_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="5sp"
+            android:paddingTop="5sp" >
+
+            <TextView
+                android:id="@+id/tv_exper_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawablePadding="5sp"
+                android:drawableRight="@drawable/icon_exper_tab"
+                android:text="@string/tv_exper_tab_right"
+                android:textColor="@android:color/black" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line_ask_top"
+        android:contentDescription="@null" />
+
+    <com.innouni.yinongbao.view.PullToRefreshView
+        android:id="@+id/pullview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/list_exper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
+    </com.innouni.yinongbao.view.PullToRefreshView>
+
+</LinearLayout>

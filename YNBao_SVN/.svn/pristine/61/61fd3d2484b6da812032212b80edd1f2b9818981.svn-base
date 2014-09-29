@@ -1,0 +1,98 @@
+package com.innouni.yinongbao;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+public class LoginActivity extends Activity implements OnClickListener {
+	/***
+	 * 头部返回按钮
+	 */
+	private RelativeLayout rl_back;
+	/***
+	 * 头部标题控件
+	 */
+	private TextView tv_title;
+	private EditText edt_name;// 输入用户编辑框
+	private EditText edt_pssword;// 输入用户密码编辑框
+	private Button btn_login;// 登录按钮
+	private TextView tv_register;// 注册按钮
+	private TextView tv_forget;// 忘记密码按钮
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+		
+		initHeader();
+		initBodyer();
+	}
+
+	/***
+	 * 初始化头部控件
+	 */
+	private void initHeader() {
+		rl_back = (RelativeLayout) findViewById(R.id.rl_header_back);
+		tv_title = (TextView) findViewById(R.id.tv_header_title);
+
+		tv_title.setText(getString(R.string.tv_header_ask));
+		rl_back.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
+	}
+
+	/***
+	 * 实例化控件
+	 */
+	private void initBodyer() {
+		btn_login = (Button) findViewById(R.id.btn_login);
+		tv_forget = (TextView) findViewById(R.id.txt_login_forget);
+		tv_register = (TextView) findViewById(R.id.txt_login_resign);
+
+		edt_pssword = (EditText) findViewById(R.id.edt_login_pass);
+		edt_name = (EditText) findViewById(R.id.edt_login_user);
+
+		btn_login.setOnClickListener(this);
+		tv_forget.setClickable(true);
+		tv_forget.setOnClickListener(this);
+		tv_register.setClickable(true);
+		tv_register.setOnClickListener(this);
+
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_login: {// 登录按钮点击事件
+
+			break;
+		}
+		case R.id.txt_login_resign: {// 注册页面点击事件
+			Intent intent = new Intent(this, SignActivity.class);
+			startActivity(intent);
+
+			break;
+		}
+		case R.id.txt_login_forget: {// 忘记密码点击事件
+			Intent intent = new Intent(this, FindBackActivity.class);
+			startActivity(intent);
+			break;
+		}
+		default:
+			break;
+		}
+
+	}
+
+}

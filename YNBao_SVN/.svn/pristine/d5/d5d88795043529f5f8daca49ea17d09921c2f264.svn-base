@@ -1,0 +1,30 @@
+package com.innouni.yinongbao;
+
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.widget.TextView;
+
+@SuppressLint("NewApi")
+public class MainPageActivity extends FragmentActivity{
+	/***
+	 * 头部标题控件
+	 */
+	private TextView tv_title;
+	
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+	}
+	
+	/***
+	 * 初始化布局控件
+	 */
+	private void initBodyer() {
+		
+	}
+}

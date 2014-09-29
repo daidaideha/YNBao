@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 注册页面hint -->
+    <string name="hint_phonenum">您的手机号</string>
+    <string name="hint_password">密码（不可少于6位）</string>
+    <string name="hint_resurepass">确认密码</string>
+	<string name="hint_refereenum">推荐人手机号</string>
+    <string name="hint_password_update">不少于6个字符</string>
+	
+    <string name="hint_ask_title">请输入标题</string>
+    <string name="hint_ask_context">请输入字符&#8230;</string>
+    <string name="hint_exper_search">输入搜索关键字</string>
+</resources>

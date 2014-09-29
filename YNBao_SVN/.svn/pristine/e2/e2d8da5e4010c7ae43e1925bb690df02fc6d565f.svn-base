@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">易农宝</string>
+    
+    <!-- the header text -->
+    <string name="tv_header_ask">我要问</string>
+    <string name="tv_header_exper">专家库</string>
+    <string name="tv_header_exper_detail">专家详情</string>
+    
+    <!-- the main activity text -->
+    <string name="txt_main">首\t页</string>
+    <string name="txt_main_home">首页</string>
+    <string name="txt_main_collect">我的收藏</string>
+    <string name="txt_main_person">个人中心</string>
+    <string name="txt_main_set">设置</string>
+    
+    <!-- the register activity text -->
+    <string name="btn_regsign">注册</string>
+    <string name="btn_getmessage">短信获取验证码</string>
+    <string name="txt_referee">推荐人（此项非必填项）</string>
+    <string name="rbtn_agreesign">同意注册协议</string>
+    
+    <!-- the login activity text -->
+    <string name="txt_login">登录</string>
+    <string name="txt_loginuser">手机号/邮箱/用户名</string>
+    <string name="txt_loginpass">输出密码</string>
+    <string name="txt_loginresign">注册</string>
+    <string name="txt_loginbtn">登\t\t录</string>
+    <string name="txt_loginforget">忘记密码</string>
+    
+    <!-- 重置密码页面 -->
+    <string name="txt_resetpass_newpass">输入新密码（8&#8211;16个字符）</string>
+    <string name="txt_resetpass_resure">确认密码</string>
+    <string name="txt_resetpass">重置密码</string>
+    <string name="txt_resetpass_done">提\t\t\t交</string>
+    
+	<!-- the findpassword activity text -->
+    <string name="tv_findback_phone">请输入手机号码</string>  
+    <string name="tv_findback_getcode">短信获取验证码</string>  
+    <string name="btn_findback_done">完\t\t成</string>
+    
+    <!-- the exper activities text -->
+	<string name="tv_exper_tab_left">按类型</string>
+	<string name="tv_exper_tab_middle">按作物</string>
+	<string name="tv_exper_tab_right">按地区</string>
+	<string name="label_exper_detail_crop">作物：$message$</string>
+	<string name="label_exper_detail_address">地区：$message$</string>
+	<string name="label_exper_detail_replay">回复：$number$</string>
+	<string name="label_exper_detail_focus">关注：$number$</string>
+	<string name="tv_exper_detail_tab_focus">关注</string>
+	<string name="tv_exper_detail_tab_phone">96318</string>
+	<string name="label_exper_detail_context">个人简介</string>
+	<string name="label_exper_detail_question">回答列表</string>
+	<string name="label_exper_detail_technology">技术列表</string>
+	<string name="label_exper_detail_relate">关联企业</string>
+    
+    <string name="btn_ask_submit">提&#160;&#160;&#160;&#160;交</string>
+</resources>

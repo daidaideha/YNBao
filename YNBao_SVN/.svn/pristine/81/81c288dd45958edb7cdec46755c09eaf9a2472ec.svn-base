@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pd_vsion_check">版本检验中&#8230;</string>
+    <string name="pd_vsion_updata">版本更新中&#8230;</string>
+    <string name="pd_data_check">数据验证中…</string>
+    <string name="pd_data_del">数据删除中…</string>
+    <string name="pd_data_link">获取数据中…</string>
+    <string name="pd_data_upload">数据提交中&#8230;</string>
+    <string name="pd_data_location">正在定位中……</string>
+    <string name="pd_data_phone_check">手机号检查中……</string>
+</resources>

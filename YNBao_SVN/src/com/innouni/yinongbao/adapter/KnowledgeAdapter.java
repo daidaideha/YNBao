@@ -1,0 +1,124 @@
+package com.innouni.yinongbao.adapter;
+
+import java.util.List;
+
+import android.content.Context;
+import android.text.Html;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.innouni.yinongbao.R;
+import com.innouni.yinongbao.cache.ImageLoader;
+import com.innouni.yinongbao.unit.knowledge.KnowledgeUnit;
+
+/***
+ * 知识库适配器
+ * 
+ * @author LinYuLing
+ * @Updatedate 2014-09-25
+ */
+public class KnowledgeAdapter extends BaseAdapter {
+	private LayoutInflater inflater;
+	/***
+	 * 图片加载工具类
+	 */
+	private ImageLoader mImageLoader;
+	/***
+	 * 上下文变量
+	 */
+	private Context context;
+	/***
+	 * 数据列表
+	 */
+	private List<KnowledgeUnit> list;
+	/***
+	 * 图片宽度
+	 */
+	private int width;
+
+	public KnowledgeAdapter(Context context, List<KnowledgeUnit> list, int width) {
+		this.context = context;
+		this.inflater = LayoutInflater.from(context);
+		this.mImageLoader = new ImageLoader(context);
+		this.list = list;
+		this.width = width;
+	}
+
+	public void setList(List<KnowledgeUnit> list) {
+		this.list.addAll(list);
+	}
+
+	public void clearList() {
+		this.list.clear();
+	}
+
+	@Override
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return list.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		// TODO Auto-generated method stub
+		return list.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		// TODO Auto-generated method stub
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup arg2) {
+		// TODO Auto-generated method stub
+		convertView = inflater.inflate(R.layout.adapter_knowledge, null);
+		ImageView iv_photo = (ImageView) convertView
+				.findViewById(R.id.iv_photo);
+		TextView tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+		TextView tv_date = (TextView) convertView.findViewById(R.id.tv_date);
+		TextView tv_context = (TextView) convertView
+				.findViewById(R.id.tv_context);
+		TextView tv_type = (TextView) convertView.findViewById(R.id.tv_type);
+		TextView tv_look = (TextView) convertView.findViewById(R.id.tv_look);
+		TextView tv_comment = (TextView) convertView
+				.findViewById(R.id.tv_comments);
+		ImageView iv_image = (ImageView) convertView
+				.findViewById(R.id.iv_image);
+		// ImageView iv_blog = (ImageView)
+		// convertView.findViewById(R.id.iv_blog);
+		ImageView iv_best = (ImageView) convertView.findViewById(R.id.iv_best);
+
+		iv_photo.setLayoutParams(new LayoutParams(width, width));
+		mImageLoader.DisplayImage(list.get(position).getAvatar(), iv_photo,
+				false);
+		tv_name.setText(list.get(position).getAuthor());
+		tv_date.setText(list.get(position).getAddtime());
+		tv_context.setText(list.get(position).getTitle());
+		tv_type.setText(Html.fromHtml(context.getString(R.string.tv_konwledge_type)
+				.replace("$name$", "<font color=\"#1fb7f6\">" + list.get(position).getName() 
+						+ "</font>").replace("$type$", "<font color=\"#1fb7f6\">"
+								+ list.get(position).getType() + "</font>")));
+		tv_look.setText(context.getString(R.string.tv_konwledge_look).replace(
+				"$number$", list.get(position).getViews()));
+		tv_comment.setText(list.get(position).getReplies());
+		if (list.get(position).getAttachment().equals("0")) {
+			iv_image.setVisibility(View.INVISIBLE);
+		} else {
+			iv_image.setVisibility(View.VISIBLE);
+		}
+		if (Integer.valueOf(list.get(position).getReplies()) > 0) {
+			iv_best.setVisibility(View.VISIBLE);
+		} else {
+			iv_best.setVisibility(View.GONE);
+		}
+		return convertView;
+	}
+
+}

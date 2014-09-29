@@ -1,0 +1,600 @@
+package com.innouni.yinongbao.activity.expert;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
+
+import com.innouni.yinongbao.R;
+import com.innouni.yinongbao.adapter.ExperDetailGVAdapter;
+import com.innouni.yinongbao.adapter.ExperDetailListAdapter;
+import com.innouni.yinongbao.cache.ImageLoader;
+import com.innouni.yinongbao.unit.ExperBlogUnit;
+import com.innouni.yinongbao.unit.ExperCompanyUnit;
+import com.innouni.yinongbao.unit.ExperThreadUnit;
+import com.innouni.yinongbao.unit.ExperUnit;
+import com.innouni.yinongbao.unit.HttpCode;
+import com.innouni.yinongbao.view.MyGridView;
+import com.innouni.yinongbao.view.MyListView;
+import com.innouni.yinongbao.widget.IntentToOther;
+import com.innouni.yinongbao.widget.comFunction;
+import com.innouni.yinongbao.widget.sPreferences;
+
+/***
+ * 专家详情界面
+ * 
+ * @author LinYuLing
+ * @UpdateDate 2014-09-23
+ */
+public class ExperDetailActivity extends Activity implements OnClickListener {
+	/***
+	 * 头部返回按钮
+	 */
+	private RelativeLayout rl_back;
+	/***
+	 * 头部标题控件
+	 */
+	private TextView tv_title;
+	/***
+	 * 主体布局控件
+	 */
+	private LinearLayout ll_bodyer;
+	/***
+	 * 专家头像显示控件
+	 */
+	private ImageView iv_photo;
+	/***
+	 * 专家姓名显示控件
+	 */
+	private TextView tv_name;
+	/***
+	 * 专家等级显示控件
+	 */
+	private TextView tv_leval;
+	/***
+	 * 专家所在公司
+	 */
+	private TextView tv_company;
+	/***
+	 * 专家荣誉显示控件
+	 */
+	private TextView tv_context;
+	/***
+	 * 作物显示控件
+	 */
+	private TextView tv_crop;
+	/***
+	 * 地区显示控件
+	 */
+	private TextView tv_address;
+	/***
+	 * 回复显示控件
+	 */
+	private TextView tv_replay;
+	/***
+	 * 关注显示控件
+	 */
+	private TextView tv_focus;
+	/***
+	 * 关注 我要问 咨询显示控件
+	 */
+	private TextView tv_tab_focus, tv_tab_ask, tv_tab_counsel;
+	/***
+	 * 个人简介显示控件
+	 */
+	private TextView tv_detail_context;
+	/***
+	 * 回答列表
+	 */
+	private MyListView qListView;
+	/***
+	 * 技术列表
+	 */
+	private MyListView tListView;
+	/***
+	 * 回答列表
+	 */
+	private MyGridView gridView;
+	/***
+	 * label_question：回答列表显示控件 label_technology：集数列表 label_company：关联企业
+	 */
+	private TextView label_question, label_technology, label_company;
+
+	/***
+	 * 专家id
+	 */
+	private String id;
+	/***
+	 * 用来判断是否已关注
+	 */
+	private boolean IS_FOCUS = false;
+	/***
+	 * 专家详情实体类
+	 */
+	private ExperUnit unit = null;
+	/***
+	 * 用来获取屏幕大小
+	 */
+	private DisplayMetrics dm;
+	/***
+	 * 存储数据的sp
+	 */
+	private sPreferences iSPreferences;
+	/***
+	 * 图片加载工具类
+	 */
+	private ImageLoader mImageLoader;
+
+	/***
+	 * 获取数据异步
+	 */
+	private GetDataTask getDataTask;
+	/***
+	 * 关注操作异步
+	 */
+	private FocusTask focusTask;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_exper_detail);
+		iSPreferences = new sPreferences(this);
+		mImageLoader = new ImageLoader(this);
+		dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		try {
+			id = getIntent().getStringExtra("id");
+			System.out.println("id: " + id); 
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		initHeader();
+		initBodyer();
+		getData();
+	}
+
+	/***
+	 * 初始化头部控件
+	 */
+	private void initHeader() {
+		rl_back = (RelativeLayout) findViewById(R.id.rl_header_back);
+		tv_title = (TextView) findViewById(R.id.tv_header_title);
+
+		tv_title.setText(getString(R.string.tv_header_exper_detail));
+		rl_back.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
+	}
+
+	/***
+	 * 初始化布局控件
+	 */
+	private void initBodyer() {
+		ll_bodyer = (LinearLayout) findViewById(R.id.ll_bodyer);
+		iv_photo = (ImageView) findViewById(R.id.iv_exper_photo);
+		tv_name = (TextView) findViewById(R.id.tv_exper_name);
+		tv_leval = (TextView) findViewById(R.id.tv_exper_level);
+		tv_company = (TextView) findViewById(R.id.tv_exper_company);
+		tv_context = (TextView) findViewById(R.id.tv_exper_context);
+		tv_crop = (TextView) findViewById(R.id.tv_exper_crop);
+		tv_address = (TextView) findViewById(R.id.tv_exper_adderss);
+		tv_replay = (TextView) findViewById(R.id.tv_exper_replay);
+		tv_focus = (TextView) findViewById(R.id.tv_exper_focus);
+		tv_tab_focus = (TextView) findViewById(R.id.tv_exper_tab_left);
+		tv_tab_ask = (TextView) findViewById(R.id.tv_exper_tab_middle);
+		tv_tab_counsel = (TextView) findViewById(R.id.tv_exper_tab_right);
+		tv_detail_context = (TextView) findViewById(R.id.tv_exper_person_context);
+		qListView = (MyListView) findViewById(R.id.list_question);
+		tListView = (MyListView) findViewById(R.id.list_technology);
+		gridView = (MyGridView) findViewById(R.id.gv_company);
+		label_question = (TextView) findViewById(R.id.label_exper_question);
+		label_technology = (TextView) findViewById(R.id.label_exper_technology);
+		label_company = (TextView) findViewById(R.id.label_exper_company);
+
+		tListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				// TODO Auto-generated method stub
+				Bundle bundle = new Bundle();
+				bundle.putString("id", unit.getBloglist().get(position).getId());
+				new IntentToOther(ExperDetailActivity.this, 
+						ExperTechnologyDetailActivity.class, bundle);
+			}
+		});
+		tv_tab_focus.setOnClickListener(this);
+		tv_tab_ask.setOnClickListener(this);
+		tv_tab_counsel.setOnClickListener(this);
+		label_question.setOnClickListener(this);
+		label_technology.setOnClickListener(this);
+		label_company.setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		Bundle bundle = new Bundle();
+		switch (v.getId()) {
+		case R.id.tv_exper_tab_left:
+			IS_FOCUS = !IS_FOCUS;
+			focus();
+			break;
+		case R.id.tv_exper_tab_middle:
+			new IntentToOther(this, ExperAskActivity.class, bundle);
+			break;
+		case R.id.tv_exper_tab_right:
+			startActivity(new Intent(Intent.ACTION_VIEW, 
+					Uri.parse("tel:" + unit.getMobile())));
+			break;
+		case R.id.label_exper_question:
+			bundle.putString("id", id);
+			bundle.putInt("type", 0);
+			new IntentToOther(ExperDetailActivity.this, ExperListActivity.class, bundle);
+			break;
+		case R.id.label_exper_technology:
+			bundle.putString("id", id);
+			bundle.putInt("type", 1);
+			new IntentToOther(ExperDetailActivity.this, ExperListActivity.class, bundle);
+			break;
+		case R.id.label_exper_company:
+			bundle.putString("id", id);
+			new IntentToOther(ExperDetailActivity.this, ExperCompanyActivity.class, bundle);
+			break;
+		default:
+			break;
+		}
+	}
+
+	/***
+	 * 获取数据操作
+	 */
+	private void getData() {
+		if (comFunction.isWiFi_3G(this)) {
+			if (getDataTask == null) {
+				getDataTask = new GetDataTask();
+				getDataTask.execute();
+			}
+		} else {
+			comFunction.toastMsg(getString(R.string.toast_net_link), this);
+		}
+	}
+	
+	private void focus() {
+		if (comFunction.isWiFi_3G(this)) {
+			if (focusTask == null) {
+				focusTask = new FocusTask();
+				if (IS_FOCUS) {
+					focusTask.execute("add_attention_wen_expert");
+				} else {
+					focusTask.execute("cancel_attention_wen_expert");
+				}
+			}
+		} else {
+			comFunction.toastMsg(getString(R.string.toast_net_link), this);
+		}
+	}
+
+	/***
+	 * 设置控件数据
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void initData() {
+		iv_photo.setLayoutParams(new LayoutParams(dm.widthPixels / 4,
+				dm.widthPixels / 3));
+		mImageLoader.DisplayImage(unit.getAvatar(), iv_photo, false);
+		tv_name.setText(unit.getName());
+		tv_leval.setText(unit.getGroupname());
+		tv_company.setText(unit.getCompany());
+		tv_context.setText(unit.getPosition());
+		tv_crop.setText(getString(R.string.label_exper_detail_crop).replace(
+				"$message$", unit.getSkill()));
+		tv_address.setText(getString(R.string.label_exper_detail_address)
+				.replace("$message$", unit.getResideprovince() + unit.getResidecity()
+								+ unit.getResidedist()));
+		tv_replay.setText(getString(R.string.label_exper_detail_replay)
+				.replace("$number$", unit.getThreads()));
+		tv_focus.setText(getString(R.string.label_exper_detail_replay).replace(
+				"$number$", unit.getFollower()));
+		tv_detail_context.setText(unit.getIntroduce());
+		if (unit.getThreadlist().size() == 0) {
+			label_question.setVisibility(View.GONE);
+		} else {
+			ExperDetailListAdapter qAdatper = new ExperDetailListAdapter(this,
+					unit.getThreadlist());
+			qListView.setAdapter(qAdatper);
+		}
+		if (unit.getBloglist().size() == 0) {
+			label_technology.setVisibility(View.GONE);
+		} else {
+			ExperDetailListAdapter tAdatper = new ExperDetailListAdapter(this,
+					unit.getBloglist());
+			tListView.setAdapter(tAdatper);
+		}
+		if (unit.getCompanylist().size() == 0) {
+			label_company.setVisibility(View.GONE);
+		} else {
+			ExperDetailGVAdapter cAdapter = new ExperDetailGVAdapter(this,
+					unit.getCompanylist(), dm.widthPixels / 8);
+			gridView.setAdapter(cAdapter);
+		}
+		if (IS_FOCUS) {
+			tv_tab_focus.setCompoundDrawablesWithIntrinsicBounds(
+					R.drawable.icon_exper_fouce_hover, 0, 0, 0);
+		} else {
+			tv_tab_focus.setCompoundDrawablesWithIntrinsicBounds(
+					R.drawable.icon_exper_fouce, 0, 0, 0);
+		}
+	}
+
+	/***
+	 * 获取数据异步
+	 * 
+	 * @author LinYuLing
+	 * 
+	 */
+	private class GetDataTask extends AsyncTask<Void, Void, Void> {
+		/***
+		 * 等待进度框
+		 */
+		private ProgressDialog pd;
+		private JSONObject jobj;
+		private JSONObject jobj_data;
+		private List<NameValuePair> paramsList;
+		/***
+		 * 服务器返回类型值 200：成功
+		 */
+		private String code;
+		/***
+		 * 服务器返回提示内容值
+		 */
+		private String message = null;
+		/***
+		 * 用来判断是否已经关注
+		 */
+		private String state;
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			ll_bodyer.setVisibility(View.GONE);
+			pd = new ProgressDialog(ExperDetailActivity.this);
+			pd.setIndeterminate(true);
+			pd.setCancelable(true);
+			pd.setMessage(getString(R.string.pd_data_link));
+			pd.show();
+			paramsList = new ArrayList<NameValuePair>();
+			paramsList.add(new BasicNameValuePair("Id", id));
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			// TODO Auto-generated method stub
+			String requery = comFunction.getDataFromServer(
+					"get_wen_expert_detail", paramsList,
+					ExperDetailActivity.this);
+			System.out.println("requery: " + requery);
+			try {
+				jobj = new JSONObject(requery);
+				if (jobj == null) {
+					return null;
+				}
+				code = jobj.getString("code");
+				message = jobj.getString("message");
+				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
+					jobj_data = new JSONObject(jobj.getString("data"));
+					if (jobj_data == null) {
+						return null;
+					}
+					state = jobj_data.getString("status");
+					unit = new ExperUnit();
+					unit.setId(jobj_data.getString("id"));
+					unit.setGroupid(jobj_data.getString("groupid"));
+					unit.setUsername(jobj_data.getString("username"));
+					unit.setName(jobj_data.getString("name"));
+					unit.setSkill(jobj_data.getString("skill"));
+
+					unit.setPosition(jobj_data.getString("position"));
+					unit.setResideprovince(jobj_data
+							.getString("resideprovince"));
+					unit.setResidecity(jobj_data.getString("residecity"));
+					unit.setResidedist(jobj_data.getString("residedist"));
+					unit.setMobile(jobj_data.getString("mobile"));
+					unit.setCompany(jobj_data.getString("company"));
+					unit.setIntroduce(jobj_data.getString("introduce"));
+
+					unit.setThreads(jobj_data.getString("threads"));
+					unit.setFollower(jobj_data.getString("follower"));
+					unit.setAvatar(jobj_data.getString("avatar"));
+					unit.setGroupname(jobj_data.getString("groupname"));
+					unit.setIcon(jobj_data.getString("icon"));
+					JSONArray jArray_exper_blog = new JSONArray(
+							jobj_data.getString("bloglist"));
+					List<ExperBlogUnit> list_blog = new ArrayList<ExperBlogUnit>();
+					for (int j = 0; j < jArray_exper_blog.length(); j++) {
+						ExperBlogUnit blogUnit = new ExperBlogUnit();
+						blogUnit.setId(jArray_exper_blog.getJSONObject(j)
+								.getString("id"));
+						blogUnit.setTitle(jArray_exper_blog.getJSONObject(j)
+								.getString("title"));
+						blogUnit.setType(jArray_exper_blog.getJSONObject(j)
+								.getString("type"));
+						blogUnit.setAddtime(jArray_exper_blog.getJSONObject(j)
+								.getString("addtime"));
+						list_blog.add(blogUnit);
+					}
+					unit.setBloglist(list_blog);
+					JSONArray jArray_exper_thread = new JSONArray(
+							jobj_data.getString("threadlist"));
+					List<ExperThreadUnit> list_thread = new ArrayList<ExperThreadUnit>();
+					for (int j = 0; j < jArray_exper_thread.length(); j++) {
+						ExperThreadUnit threadUnit = new ExperThreadUnit();
+						threadUnit.setId(jArray_exper_thread.getJSONObject(j)
+								.getString("tid"));
+						threadUnit.setSubject(jArray_exper_thread
+								.getJSONObject(j).getString("subject"));
+						threadUnit.setAddtime(jArray_exper_thread
+								.getJSONObject(j).getString("addtime"));
+						list_thread.add(threadUnit);
+					}
+					unit.setThreadlist(list_thread);
+					JSONArray jArray_exper_company = new JSONArray(
+							jobj_data.getString("companylist"));
+					List<ExperCompanyUnit> list_company = new ArrayList<ExperCompanyUnit>();
+					for (int j = 0; j < jArray_exper_company.length(); j++) {
+						ExperCompanyUnit companyUnit = new ExperCompanyUnit();
+						companyUnit.setUserid(jArray_exper_company
+								.getJSONObject(j).getString("userid"));
+						companyUnit.setLogo(jArray_exper_company.getJSONObject(
+								j).getString("logo"));
+						companyUnit.setCompanyname(jArray_exper_company
+								.getJSONObject(j).getString("companyname"));
+						list_company.add(companyUnit);
+					}
+					unit.setCompanylist(list_company);
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			getDataTask = null;
+			if (message != null) {
+				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
+					if (state.equals("1")) {
+						IS_FOCUS = true;
+					} else {
+						IS_FOCUS = false;
+					}
+					initData();
+					ll_bodyer.setVisibility(View.VISIBLE);
+				} else {
+					comFunction.toastMsg(message, ExperDetailActivity.this);
+				}
+			} else {
+				comFunction.toastMsg(getString(R.string.toast_net_link),
+						ExperDetailActivity.this);
+			}
+			if (pd.isShowing()) {
+				pd.dismiss();
+			}
+			super.onPostExecute(result);
+		}
+	}
+
+	/***
+	 * 获取数据异步
+	 * 
+	 * @author LinYuLing
+	 * 
+	 */
+	private class FocusTask extends AsyncTask<String, Void, Void> {
+		/***
+		 * 等待进度框
+		 */
+		private ProgressDialog pd;
+		private JSONObject jobj;
+		private List<NameValuePair> paramsList;
+//		/***
+//		 * 服务器返回类型值 200：成功
+//		 */
+//		private String code;
+		/***
+		 * 服务器返回提示内容值
+		 */
+		private String message = null;
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			pd = new ProgressDialog(ExperDetailActivity.this);
+			pd.setIndeterminate(true);
+			pd.setCancelable(true);
+			pd.setMessage(getString(R.string.pd_data_upload));
+			pd.show();
+			paramsList = new ArrayList<NameValuePair>();
+			paramsList.add(new BasicNameValuePair("Id", id));
+			paramsList.add(new BasicNameValuePair("userId", iSPreferences.getSp()
+					.getString("memberId", "")));
+		}
+
+		@Override
+		protected Void doInBackground(String... parms) {
+			// TODO Auto-generated method stub
+			String requery = comFunction.getDataFromServer(parms[0], paramsList,
+					ExperDetailActivity.this);
+			System.out.println("requery: " + requery);
+			try {
+				jobj = new JSONObject(requery);
+				if (jobj == null) {
+					return null;
+				}
+//				code = jobj.getString("code");
+				message = jobj.getString("message");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			focusTask = null;
+			if (pd.isShowing()) {
+				pd.dismiss();
+			}
+			if (message != null) {
+				if (IS_FOCUS) {
+					tv_tab_focus.setCompoundDrawablesWithIntrinsicBounds(
+							R.drawable.icon_exper_fouce_hover, 0, 0, 0);
+				} else {
+					tv_tab_focus.setCompoundDrawablesWithIntrinsicBounds(
+							R.drawable.icon_exper_fouce, 0, 0, 0);
+				}
+				comFunction.toastMsg(message, ExperDetailActivity.this);
+			} else {
+				comFunction.toastMsg(getString(R.string.toast_net_link),
+						ExperDetailActivity.this);
+			}
+			super.onPostExecute(result);
+		}
+
+	}
+}
