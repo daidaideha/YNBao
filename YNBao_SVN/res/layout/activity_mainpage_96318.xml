@@ -27,13 +27,16 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/icon_96318_inpro"
             android:drawablePadding="20sp"
-            android:paddingLeft="20sp"
-            android:paddingTop="20sp"
-            android:paddingRight="20sp"
+            android:gravity="center_vertical"
+            android:padding="15sp"
             android:text="@string/txt_inpro"
-            android:textColor="@color/callin" 
-            android:drawableBottom="@drawable/bg_96318_line"
-            />
+            android:textColor="@color/callin" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_96318_line"
+            android:contentDescription="@null" />
 
         <TextView
             android:id="@+id/txt_96318_outpro"
@@ -41,7 +44,8 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/icon_96318_outpro"
             android:drawablePadding="20sp"
-            android:padding="20sp"
+            android:gravity="center_vertical"
+            android:padding="15sp"
             android:text="@string/txt_outpro"
             android:textColor="@color/callin" />
     </LinearLayout>

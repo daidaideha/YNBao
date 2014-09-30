@@ -115,7 +115,7 @@ public class GroupOfListActivity extends FragmentActivity implements OnClickList
 		mRecommendTextView.setOnClickListener(this);
 		mGroupNewsTextView.setOnClickListener(this);
 		
-		
+		mHotGroupTextView.performClick();
 	}
 
 	@Override

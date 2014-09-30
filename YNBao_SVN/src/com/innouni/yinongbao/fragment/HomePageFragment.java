@@ -37,6 +37,7 @@ import com.innouni.yinongbao.activity.expert.ExpertMainActivity;
 import com.innouni.yinongbao.activity.group.GroupOfListActivity;
 import com.innouni.yinongbao.activity.knowledge.KnowledgeActivity;
 import com.innouni.yinongbao.activity.pest.PestActivity;
+import com.innouni.yinongbao.activity.video.VideoActivity;
 import com.innouni.yinongbao.cache.ImageLoader;
 import com.innouni.yinongbao.unit.AdUnit;
 import com.innouni.yinongbao.unit.HttpCode;
@@ -293,7 +294,7 @@ public class HomePageFragment extends Fragment implements OnClickListener {
 			new IntentToOther(getActivity(), PestActivity.class, null);
 			break;
 		case R.id.btn_main_secondthree:
-
+			new IntentToOther(getActivity(), VideoActivity.class, null);
 			break;
 		case R.id.btn_main_thirdone:
 			new IntentToOther(getActivity(), GroupOfListActivity.class, null);

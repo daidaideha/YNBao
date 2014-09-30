@@ -1,4 +1,4 @@
-package com.innouni.yinongbao.activity.pest;
+package com.innouni.yinongbao.activity.video;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,22 +36,23 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.innouni.yinongbao.R;
 import com.innouni.yinongbao.activity.AdDetailActivity;
+import com.innouni.yinongbao.activity.pest.PestTypeActivity;
 import com.innouni.yinongbao.adapter.ExhibitionMainAdapter;
 import com.innouni.yinongbao.cache.ImageLoader;
 import com.innouni.yinongbao.unit.AdUnit;
 import com.innouni.yinongbao.unit.HttpCode;
-import com.innouni.yinongbao.unit.pest.PestMainUnit;
-import com.innouni.yinongbao.unit.pest.PestUnit;
+import com.innouni.yinongbao.unit.video.VideoMainUnit;
+import com.innouni.yinongbao.unit.video.VideoUnit;
 import com.innouni.yinongbao.view.PopExhibitionType.OnMyItemClickListener;
 import com.innouni.yinongbao.widget.IntentToOther;
 import com.innouni.yinongbao.widget.comFunction;
 
 /***
- * 害虫图库主界面
+ * 视频库主界面
  * @author LinYuLing
  * @UpdateDate 2014-09-30
  */
-public class PestActivity extends Activity implements OnClickListener,
+public class VideoActivity extends Activity implements OnClickListener,
 		OnMyItemClickListener {
 	/***
 	 * 头部返回按钮
@@ -70,7 +71,7 @@ public class PestActivity extends Activity implements OnClickListener,
 	 */
 	private EditText edt_search;
 	/***
-	 * 产品展示控件
+	 * 视频展示控件
 	 */
 	private ListView listView;
 	/***
@@ -97,7 +98,7 @@ public class PestActivity extends Activity implements OnClickListener,
 	/***
 	 * 数据适配器
 	 */
-	private ExhibitionMainAdapter<PestMainUnit> adapter;
+	private ExhibitionMainAdapter<VideoMainUnit> adapter;
 	/***
 	 * 图片加载工具类
 	 */
@@ -114,11 +115,11 @@ public class PestActivity extends Activity implements OnClickListener,
 	/***
 	 * 初始化数据列表
 	 */
-	private List<PestMainUnit> list_bak;
+	private List<VideoMainUnit> list_bak;
 	/***
 	 * 数据列表
 	 */
-	private List<PestMainUnit> list_data;
+	private List<VideoMainUnit> list_data;
 //	/***
 //	 * 分类数据列表
 //	 */
@@ -167,7 +168,7 @@ public class PestActivity extends Activity implements OnClickListener,
 	 * 数据初始化
 	 */
 	private void initData() {
-		pd = new ProgressDialog(PestActivity.this);
+		pd = new ProgressDialog(VideoActivity.this);
 		pd.setMessage(getString(R.string.pd_data_link));
 		pd.setIndeterminate(true);
 		pd.setCancelable(true);
@@ -175,8 +176,8 @@ public class PestActivity extends Activity implements OnClickListener,
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		mImageLoader = new ImageLoader(this);
 		list_bottom = new ArrayList<ImageView>();
-		list_bak = new ArrayList<PestMainUnit>();
-		list_data = new ArrayList<PestMainUnit>();
+		list_bak = new ArrayList<VideoMainUnit>();
+		list_data = new ArrayList<VideoMainUnit>();
 //		list_type = new ArrayList<ExhibitionTypeUnit>();
 		list_ad = new ArrayList<AdUnit>();
 		pageViews = new ArrayList<ImageView>();
@@ -189,7 +190,7 @@ public class PestActivity extends Activity implements OnClickListener,
 		rl_back = (RelativeLayout) findViewById(R.id.rl_header_back);
 		tv_title = (TextView) findViewById(R.id.tv_header_title);
 
-		tv_title.setText(getString(R.string.tv_header_pest));
+		tv_title.setText(getString(R.string.tv_header_video));
 		rl_back.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -213,7 +214,8 @@ public class PestActivity extends Activity implements OnClickListener,
 		rl_vp.setLayoutParams(new LayoutParams(dm.widthPixels, dm.widthPixels / 2));
 		ll_vp_bottom = (LinearLayout) headview.findViewById(R.id.ll_vp_bottom);
 		listView.addHeaderView(headview);
-		adapter = new ExhibitionMainAdapter<PestMainUnit>(this, list_bak, dm.widthPixels / 21 * 8);
+		adapter = new ExhibitionMainAdapter<VideoMainUnit>(this, 
+				list_bak, dm.widthPixels / 21 * 8);
 		listView.setAdapter(adapter);
 		 
 		edt_search.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
@@ -227,7 +229,7 @@ public class PestActivity extends Activity implements OnClickListener,
 					Bundle bundle = new Bundle();
 					bundle.putInt("type", 1);
 					bundle.putString("search", edt_search.getText().toString());
-					new IntentToOther(PestActivity.this, 
+					new IntentToOther(VideoActivity.this, 
 							PestTypeActivity.class, bundle);
 					edt_search.setText("");
 				}
@@ -406,7 +408,7 @@ public class PestActivity extends Activity implements OnClickListener,
 					Bundle bundle = new Bundle();
 					bundle.putString("title", list_ad.get(pos).getName());
 					bundle.putString("linkurl", list_ad.get(pos).getLinkUrl());
-					new IntentToOther(PestActivity.this, AdDetailActivity.class, bundle);
+					new IntentToOther(VideoActivity.this, AdDetailActivity.class, bundle);
 				}
 			});
 			return pageViews.get(arg1);
@@ -449,8 +451,8 @@ public class PestActivity extends Activity implements OnClickListener,
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
-			String requery = comFunction.getDataFromServer("get_gallery_index", 
-					paramsList, PestActivity.this);
+			String requery = comFunction.getDataFromServer("get_video_index", 
+					paramsList, VideoActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
@@ -464,18 +466,18 @@ public class PestActivity extends Activity implements OnClickListener,
 					if (jArray_data == null) {
 						return null;
 					}
-					PestMainUnit unit = null;
-					PestUnit unit_p = null;
-					List<PestUnit> list = null;
+					VideoMainUnit unit = null;
+					VideoUnit unit_p = null;
+					List<VideoUnit> list = null;
 					for (int i = 0; i < jArray_data.length(); i++) {
-						unit = new PestMainUnit();
+						unit = new VideoMainUnit();
 						unit.setCatId(jArray_data.getJSONObject(i).getString("catid"));
 						unit.setCatName(jArray_data.getJSONObject(i).getString("catname"));
 						JSONArray jArray_p = new JSONArray(jArray_data.getJSONObject(i)
 								.getString("picturelist"));
-						list = new ArrayList<PestUnit>();
+						list = new ArrayList<VideoUnit>();
 						for (int j = 0; j < jArray_p.length(); j++) {
-							unit_p = new PestUnit();
+							unit_p = new VideoUnit();
 							unit_p.setId(jArray_p.getJSONObject(j).getString("id"));
 							unit_p.setThumb(jArray_p.getJSONObject(j).getString("thumb"));
 							unit_p.setTitle(jArray_p.getJSONObject(j).getString("title"));
@@ -502,11 +504,11 @@ public class PestActivity extends Activity implements OnClickListener,
 					adapter.setList(list_data);
 					adapter.notifyDataSetChanged();
 				} else {
-					comFunction.toastMsg(message, PestActivity.this);
+					comFunction.toastMsg(message, VideoActivity.this);
 				}
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						PestActivity.this);
+						VideoActivity.this);
 			}
 			if (pd.isShowing()) {
 				pd.dismiss();
@@ -548,7 +550,7 @@ public class PestActivity extends Activity implements OnClickListener,
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
 			String requery = comFunction.getDataFromServer("get_shop_menu", paramsList,
-					PestActivity.this);
+					VideoActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
@@ -596,11 +598,11 @@ public class PestActivity extends Activity implements OnClickListener,
 //							btn_menu, dm.widthPixels, dm.heightPixels / 5 * 4);
 //					popType.setOnMyItemClickListener(PestActivity.this);
 				} else {
-					comFunction.toastMsg(message, PestActivity.this);
+					comFunction.toastMsg(message, VideoActivity.this);
 				}
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						PestActivity.this);
+						VideoActivity.this);
 			}
 			getAD();
 			super.onPostExecute(result);
@@ -635,14 +637,14 @@ public class PestActivity extends Activity implements OnClickListener,
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			paramsList = new ArrayList<NameValuePair>();
-			paramsList.add(new BasicNameValuePair("spaceId", "101"));
+			paramsList.add(new BasicNameValuePair("spaceId", "103"));
 		}
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
 			String requery = comFunction.getDataFromServer("ynb_ad_index",
-					paramsList, PestActivity.this);
+					paramsList, VideoActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
@@ -683,11 +685,11 @@ public class PestActivity extends Activity implements OnClickListener,
 				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
 					initPVData();
 				} else {
-					comFunction.toastMsg(message, PestActivity.this);
+					comFunction.toastMsg(message, VideoActivity.this);
 				}
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						PestActivity.this);
+						VideoActivity.this);
 			}
 			getData();
 		}

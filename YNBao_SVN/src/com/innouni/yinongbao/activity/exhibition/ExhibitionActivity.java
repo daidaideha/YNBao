@@ -26,6 +26,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -79,6 +80,10 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 	 * 广告控件
 	 */
 	private View headview;
+	/***
+	 * 轮播图外层布局控件
+	 */
+	private RelativeLayout rl_vp;
 	/***
 	 * 轮播图控件
 	 */
@@ -205,6 +210,8 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		edt_search = (EditText) findViewById(R.id.edt_search);
 		listView = (ListView) findViewById(R.id.listview);
 		headview = getLayoutInflater().inflate(R.layout.view_viewpager, null);
+		rl_vp = (RelativeLayout) headview.findViewById(R.id.rl_vp);
+		rl_vp.setLayoutParams(new LayoutParams(dm.widthPixels, dm.widthPixels / 2));
 		mViewPager = (ViewPager) headview.findViewById(R.id.viewpager_main);
 		ll_vp_bottom = (LinearLayout) headview.findViewById(R.id.ll_vp_bottom);
 		listView.addHeaderView(headview);
@@ -319,6 +326,9 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		}
 		mViewPager.setAdapter(new MyAdapter());
 		mViewPager.setCurrentItem(0);
+		if (list_ad.size() == 0) {
+			listView.removeHeaderView(headview);
+		} 
 	}
 
 	/***

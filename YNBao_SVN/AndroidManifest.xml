@@ -163,6 +163,13 @@
             android:name="com.innouni.yinongbao.activity.pest.PestDetailActivity"
             android:launchMode="standard"
             android:screenOrientation="portrait" />
+        
+        <!-- the video activity -->
+        <activity
+            android:name="com.innouni.yinongbao.activity.video.VideoActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
 
         <!-- the person activity -->
         <activity
