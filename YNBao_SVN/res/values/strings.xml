@@ -26,6 +26,7 @@
     <string name="tv_header_pest">病虫害图库</string>
     <string name="tv_header_pest_type">病虫害列表</string>
     <string name="tv_header_pest_detail">病虫害详情</string>
+    <string name="tv_header_video">视频库</string>
     <string name="tv_header_konwledge_detail">问题详情</string>
     <string name="tv_header_group_personinfo">成员资料</string>
 

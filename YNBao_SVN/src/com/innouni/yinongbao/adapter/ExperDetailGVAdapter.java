@@ -16,12 +16,15 @@ import com.innouni.yinongbao.cache.ImageLoader;
 import com.innouni.yinongbao.unit.exhibition.ExhibitionUnit;
 import com.innouni.yinongbao.unit.exper.ExperCompanyUnit;
 import com.innouni.yinongbao.unit.pest.PestUnit;
+import com.innouni.yinongbao.unit.video.VideoUnit;
 
 /***
  * gridview图片适配器
+ * 
  * @author LinYuLing
- *
- * @param <T> 列表参数类型
+ * 
+ * @param <T>
+ *            列表参数类型
  */
 public class ExperDetailGVAdapter<T> extends BaseAdapter {
 	private LayoutInflater inflater;
@@ -74,17 +77,26 @@ public class ExperDetailGVAdapter<T> extends BaseAdapter {
 				.findViewById(R.id.tv_company);
 		mImageView.setLayoutParams(new LayoutParams(width, width));
 		if (list.get(position) instanceof ExperCompanyUnit) {
-			mImageLoader.DisplayImage(((ExperCompanyUnit) list.get(position)).getLogo(), mImageView,
-					false);
-			mTextView.setText(((ExperCompanyUnit) list.get(position)).getCompanyname());
+			mImageLoader.DisplayImage(
+					((ExperCompanyUnit) list.get(position)).getLogo(),
+					mImageView, false);
+			mTextView.setText(((ExperCompanyUnit) list.get(position))
+					.getCompanyname());
 		} else if (list.get(position) instanceof ExhibitionUnit) {
-			mImageLoader.DisplayImage(((ExhibitionUnit) list.get(position)).getThumb(), mImageView,
-				false);
+			mImageLoader.DisplayImage(
+					((ExhibitionUnit) list.get(position)).getThumb(),
+					mImageView, false);
 			mTextView.setText(((ExhibitionUnit) list.get(position)).getTitle());
 		} else if (list.get(position) instanceof PestUnit) {
-			mImageLoader.DisplayImage(((PestUnit) list.get(position)).getThumb(), mImageView,
+			mImageLoader.DisplayImage(
+					((PestUnit) list.get(position)).getThumb(), mImageView,
 					false);
-				mTextView.setText(((PestUnit) list.get(position)).getTitle());
+			mTextView.setText(((PestUnit) list.get(position)).getTitle());
+		} else if (list.get(position) instanceof VideoUnit) {
+			mImageLoader.DisplayImage(
+					((VideoUnit) list.get(position)).getThumb(), mImageView,
+					false);
+			mTextView.setText(((VideoUnit) list.get(position)).getTitle());
 		}
 		return convertView;
 	}

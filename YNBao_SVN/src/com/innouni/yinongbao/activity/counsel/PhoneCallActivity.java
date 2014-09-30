@@ -3,10 +3,13 @@ package com.innouni.yinongbao.activity.counsel;
 import com.innouni.yinongbao.R;
 import com.innouni.yinongbao.R.layout;
 import com.innouni.yinongbao.R.menu;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,15 +30,11 @@ public class PhoneCallActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mainpage_96318);
+		
+		initHeader();
+		initBodyer();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.phone_call, menu);
-		return true;
-	}
-	
 	/***
 	 * 初始化头部控件
 	 */
@@ -74,15 +73,19 @@ public class PhoneCallActivity extends Activity implements OnClickListener{
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
 		case R.id.txt_96318_inpro:{
-			mInProvinceTextView.setTextColor(R.color.white);
-			mInProvinceTextView.setBackgroundColor(R.color.blue);
-			mInPhoneCallDialog.show();
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri
+					.parse("tel:96318")));
+//			mInProvinceTextView.setTextColor(R.color.white);
+//			mInProvinceTextView.setBackgroundColor(R.color.blue);
+//			mInPhoneCallDialog.show();
 			break;
 		}
 		case R.id.txt_96318_outpro:{
-			mOutProvinceTextView.setTextColor(R.color.white);
-			mInProvinceTextView.setBackgroundColor(R.color.blue);
-			mOutPhoneCallDialog.show();
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri
+					.parse("tel:400-85-96138")));
+//			mOutProvinceTextView.setTextColor(R.color.white);
+//			mInProvinceTextView.setBackgroundColor(R.color.blue);
+//			mOutPhoneCallDialog.show();
 			break;
 		}
 		default:

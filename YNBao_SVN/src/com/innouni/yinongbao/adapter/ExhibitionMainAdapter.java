@@ -23,6 +23,8 @@ import com.innouni.yinongbao.unit.exhibition.ExhibitionMainUnit;
 import com.innouni.yinongbao.unit.exhibition.ExhibitionUnit;
 import com.innouni.yinongbao.unit.pest.PestMainUnit;
 import com.innouni.yinongbao.unit.pest.PestUnit;
+import com.innouni.yinongbao.unit.video.VideoMainUnit;
+import com.innouni.yinongbao.unit.video.VideoUnit;
 import com.innouni.yinongbao.view.MyGridView;
 import com.innouni.yinongbao.widget.IntentToOther;
 
@@ -100,6 +102,10 @@ public class ExhibitionMainAdapter<T> extends BaseAdapter {
 			adapter = new ExperDetailGVAdapter<PestUnit>(context,
 					((PestMainUnit) list.get(position)).getPicturelist(), width);
 			tv_title.setText(((PestMainUnit) list.get(position)).getCatName());
+		} else if (list.get(position) instanceof VideoMainUnit) {
+			adapter = new ExperDetailGVAdapter<VideoUnit>(context,
+					((VideoMainUnit) list.get(position)).getPicturelist(), width);
+			tv_title.setText(((VideoMainUnit) list.get(position)).getCatName());
 		}
 
 		gridView.setAdapter(adapter);

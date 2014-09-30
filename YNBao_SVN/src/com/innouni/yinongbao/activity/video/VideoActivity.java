@@ -1,4 +1,4 @@
-package com.innouni.yinongbao.activity.exhibition;
+package com.innouni.yinongbao.activity.video;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,25 +36,23 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.innouni.yinongbao.R;
 import com.innouni.yinongbao.activity.AdDetailActivity;
+import com.innouni.yinongbao.activity.pest.PestTypeActivity;
 import com.innouni.yinongbao.adapter.ExhibitionMainAdapter;
 import com.innouni.yinongbao.cache.ImageLoader;
 import com.innouni.yinongbao.unit.AdUnit;
 import com.innouni.yinongbao.unit.HttpCode;
-import com.innouni.yinongbao.unit.exhibition.ExhibitionMainUnit;
-import com.innouni.yinongbao.unit.exhibition.ExhibitionTypeCUnit;
-import com.innouni.yinongbao.unit.exhibition.ExhibitionTypeUnit;
-import com.innouni.yinongbao.unit.exhibition.ExhibitionUnit;
-import com.innouni.yinongbao.view.PopExhibitionType;
+import com.innouni.yinongbao.unit.video.VideoMainUnit;
+import com.innouni.yinongbao.unit.video.VideoUnit;
 import com.innouni.yinongbao.view.PopExhibitionType.OnMyItemClickListener;
 import com.innouni.yinongbao.widget.IntentToOther;
 import com.innouni.yinongbao.widget.comFunction;
 
 /***
- * 农资展厅主界面
+ * 视频库主界面
  * @author LinYuLing
- * @UpdateDate 2014-09-27
+ * @UpdateDate 2014-09-30
  */
-public class ExhibitionActivity extends Activity implements OnClickListener,
+public class VideoActivity extends Activity implements OnClickListener,
 		OnMyItemClickListener {
 	/***
 	 * 头部返回按钮
@@ -72,13 +71,17 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 	 */
 	private EditText edt_search;
 	/***
-	 * 产品展示控件
+	 * 视频展示控件
 	 */
 	private ListView listView;
 	/***
 	 * 广告控件
 	 */
 	private View headview;
+	/***
+	 * 轮播图外层布局控件
+	 */
+	private RelativeLayout rl_vp;
 	/***
 	 * 轮播图控件
 	 */
@@ -87,15 +90,15 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 	 * 轮播图底部圈圈布局控件
 	 */
 	private LinearLayout ll_vp_bottom;
-	/***
-	 * 分类弹出框
-	 */
-	private PopExhibitionType popType;
+//	/***
+//	 * 分类弹出框
+//	 */
+//	private PopExhibitionType popType;
 	
 	/***
 	 * 数据适配器
 	 */
-	private ExhibitionMainAdapter<ExhibitionMainUnit> adapter;
+	private ExhibitionMainAdapter<VideoMainUnit> adapter;
 	/***
 	 * 图片加载工具类
 	 */
@@ -112,15 +115,15 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 	/***
 	 * 初始化数据列表
 	 */
-	private List<ExhibitionMainUnit> list_bak;
+	private List<VideoMainUnit> list_bak;
 	/***
 	 * 数据列表
 	 */
-	private List<ExhibitionMainUnit> list_data;
-	/***
-	 * 分类数据列表
-	 */
-	private List<ExhibitionTypeUnit> list_type;
+	private List<VideoMainUnit> list_data;
+//	/***
+//	 * 分类数据列表
+//	 */
+//	private List<ExhibitionTypeUnit> list_type;
 	/***
 	 * 轮播图当前选中项
 	 */
@@ -157,14 +160,15 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		initData();
 		initHeader();
 		initBodyer();
-		getType();
+//		getType();
+		getAD();
 	}
 	
 	/***
 	 * 数据初始化
 	 */
 	private void initData() {
-		pd = new ProgressDialog(ExhibitionActivity.this);
+		pd = new ProgressDialog(VideoActivity.this);
 		pd.setMessage(getString(R.string.pd_data_link));
 		pd.setIndeterminate(true);
 		pd.setCancelable(true);
@@ -172,9 +176,9 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		mImageLoader = new ImageLoader(this);
 		list_bottom = new ArrayList<ImageView>();
-		list_bak = new ArrayList<ExhibitionMainUnit>();
-		list_data = new ArrayList<ExhibitionMainUnit>();
-		list_type = new ArrayList<ExhibitionTypeUnit>();
+		list_bak = new ArrayList<VideoMainUnit>();
+		list_data = new ArrayList<VideoMainUnit>();
+//		list_type = new ArrayList<ExhibitionTypeUnit>();
 		list_ad = new ArrayList<AdUnit>();
 		pageViews = new ArrayList<ImageView>();
 	}
@@ -186,7 +190,7 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		rl_back = (RelativeLayout) findViewById(R.id.rl_header_back);
 		tv_title = (TextView) findViewById(R.id.tv_header_title);
 
-		tv_title.setText(getString(R.string.tv_header_exhibition));
+		tv_title.setText(getString(R.string.tv_header_video));
 		rl_back.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -206,10 +210,12 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		listView = (ListView) findViewById(R.id.listview);
 		headview = getLayoutInflater().inflate(R.layout.view_viewpager, null);
 		mViewPager = (ViewPager) headview.findViewById(R.id.viewpager_main);
+		rl_vp = (RelativeLayout) headview.findViewById(R.id.rl_vp);
+		rl_vp.setLayoutParams(new LayoutParams(dm.widthPixels, dm.widthPixels / 2));
 		ll_vp_bottom = (LinearLayout) headview.findViewById(R.id.ll_vp_bottom);
 		listView.addHeaderView(headview);
-		adapter = new ExhibitionMainAdapter<ExhibitionMainUnit>(
-				this, list_bak, dm.widthPixels / 21 * 8);
+		adapter = new ExhibitionMainAdapter<VideoMainUnit>(this, 
+				list_bak, dm.widthPixels / 21 * 8);
 		listView.setAdapter(adapter);
 		 
 		edt_search.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
@@ -223,8 +229,8 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 					Bundle bundle = new Bundle();
 					bundle.putInt("type", 1);
 					bundle.putString("search", edt_search.getText().toString());
-					new IntentToOther(ExhibitionActivity.this, 
-							ExhibitionTypeActivity.class, bundle);
+					new IntentToOther(VideoActivity.this, 
+							PestTypeActivity.class, bundle);
 					edt_search.setText("");
 				}
 				return false;
@@ -274,20 +280,20 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		if (popType != null) {
-			popType.showPopupWindow();
-		}
+//		if (popType != null) {
+//			popType.showPopupWindow();
+//		}
 	}
 
 	@Override
 	public void onMyItemClick(int pPosition, int cPosition) {
 		// TODO Auto-generated method stub
-		popType.showPopupWindow();
-		Bundle bundle = new Bundle();
-		bundle.putString("id", list_type.get(pPosition).getC_types()
-				.get(cPosition).getCatid());
-		new IntentToOther(ExhibitionActivity.this, 
-				ExhibitionTypeActivity.class, bundle);
+//		popType.showPopupWindow();
+//		Bundle bundle = new Bundle();
+//		bundle.putString("id", list_type.get(pPosition).getC_types()
+//				.get(cPosition).getCatid());
+//		new IntentToOther(PestActivity.this, 
+//				ExhibitionTypeActivity.class, bundle);
 	}
 
 	/***
@@ -303,11 +309,9 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 			ImageView imageView2 = new ImageView(this);
 			imageView2.setScaleType(ScaleType.CENTER);
 			if (i != currPgae) {
-				imageView2
-						.setBackgroundResource(R.drawable.icon_homepage_banner);
+				imageView2.setBackgroundResource(R.drawable.icon_homepage_banner);
 			} else {
-				imageView2
-						.setBackgroundResource(R.drawable.icon_homepage_banner_hover);
+				imageView2.setBackgroundResource(R.drawable.icon_homepage_banner_hover);
 			}
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 					LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -319,6 +323,9 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		}
 		mViewPager.setAdapter(new MyAdapter());
 		mViewPager.setCurrentItem(0);
+		if (list_ad.size() == 0) {
+			listView.removeHeaderView(headview);
+		} 
 	}
 
 	/***
@@ -343,6 +350,20 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 			if (getDataTask == null) {
 				getDataTask = new GetDataTask();
 				getDataTask.execute();
+			}
+		} else {
+			comFunction.toastMsg(getString(R.string.toast_net_link), this);
+		}
+	}
+
+	/***
+	 * 获取广告图片
+	 */
+	private void getAD() {
+		if (comFunction.isWiFi_3G(this)) {
+			if (getDataTask == null) {
+				getADTask = new GetADTask();
+				getADTask.execute();
 			}
 		} else {
 			comFunction.toastMsg(getString(R.string.toast_net_link), this);
@@ -387,7 +408,7 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 					Bundle bundle = new Bundle();
 					bundle.putString("title", list_ad.get(pos).getName());
 					bundle.putString("linkurl", list_ad.get(pos).getLinkUrl());
-					new IntentToOther(ExhibitionActivity.this, AdDetailActivity.class, bundle);
+					new IntentToOther(VideoActivity.this, AdDetailActivity.class, bundle);
 				}
 			});
 			return pageViews.get(arg1);
@@ -430,8 +451,8 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
-			String requery = comFunction.getDataFromServer("get_shop_index", 
-					paramsList, ExhibitionActivity.this);
+			String requery = comFunction.getDataFromServer("get_video_index", 
+					paramsList, VideoActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
@@ -445,18 +466,18 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 					if (jArray_data == null) {
 						return null;
 					}
-					ExhibitionMainUnit unit = null;
-					ExhibitionUnit unit_p = null;
-					List<ExhibitionUnit> list = null;
+					VideoMainUnit unit = null;
+					VideoUnit unit_p = null;
+					List<VideoUnit> list = null;
 					for (int i = 0; i < jArray_data.length(); i++) {
-						unit = new ExhibitionMainUnit();
-						unit.setCatId(jArray_data.getJSONObject(i).getString("catId"));
-						unit.setCatName(jArray_data.getJSONObject(i).getString("catName"));
+						unit = new VideoMainUnit();
+						unit.setCatId(jArray_data.getJSONObject(i).getString("catid"));
+						unit.setCatName(jArray_data.getJSONObject(i).getString("catname"));
 						JSONArray jArray_p = new JSONArray(jArray_data.getJSONObject(i)
 								.getString("picturelist"));
-						list = new ArrayList<ExhibitionUnit>();
+						list = new ArrayList<VideoUnit>();
 						for (int j = 0; j < jArray_p.length(); j++) {
-							unit_p = new ExhibitionUnit();
+							unit_p = new VideoUnit();
 							unit_p.setId(jArray_p.getJSONObject(j).getString("id"));
 							unit_p.setThumb(jArray_p.getJSONObject(j).getString("thumb"));
 							unit_p.setTitle(jArray_p.getJSONObject(j).getString("title"));
@@ -483,11 +504,11 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 					adapter.setList(list_data);
 					adapter.notifyDataSetChanged();
 				} else {
-					comFunction.toastMsg(message, ExhibitionActivity.this);
+					comFunction.toastMsg(message, VideoActivity.this);
 				}
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						ExhibitionActivity.this);
+						VideoActivity.this);
 			}
 			if (pd.isShowing()) {
 				pd.dismiss();
@@ -529,7 +550,7 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
 			String requery = comFunction.getDataFromServer("get_shop_menu", paramsList,
-					ExhibitionActivity.this);
+					VideoActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
@@ -543,22 +564,22 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 					if (jobj_data == null) {
 						return null;
 					}
-					ExhibitionTypeUnit unit = null;
-					for (int i = 0; i < jobj_data.length(); i++) {
-						unit = new ExhibitionTypeUnit();
-						unit.setCatId(jobj_data.getJSONObject(i).getString("catId"));
-						unit.setCatName(jobj_data.getJSONObject(i).getString("catName"));
-						jArray_child = new JSONArray(jobj_data.getJSONObject(i).getString("c_types"));
-						List<ExhibitionTypeCUnit> list = new ArrayList<ExhibitionTypeCUnit>();
-						for (int j = 0; j < jArray_child.length(); j++) {
-							ExhibitionTypeCUnit cUnit = new ExhibitionTypeCUnit();
-							cUnit.setCatid(jArray_child.getJSONObject(j).getString("catid"));
-							cUnit.setCatname(jArray_child.getJSONObject(j).getString("catname"));
-							list.add(cUnit);
-						}
-						unit.setC_types(list);
-						list_type.add(unit);
-					}
+//					ExhibitionTypeUnit unit = null;
+//					for (int i = 0; i < jobj_data.length(); i++) {
+//						unit = new ExhibitionTypeUnit();
+//						unit.setCatId(jobj_data.getJSONObject(i).getString("catId"));
+//						unit.setCatName(jobj_data.getJSONObject(i).getString("catName"));
+//						jArray_child = new JSONArray(jobj_data.getJSONObject(i).getString("c_types"));
+//						List<ExhibitionTypeCUnit> list = new ArrayList<ExhibitionTypeCUnit>();
+//						for (int j = 0; j < jArray_child.length(); j++) {
+//							ExhibitionTypeCUnit cUnit = new ExhibitionTypeCUnit();
+//							cUnit.setCatid(jArray_child.getJSONObject(j).getString("catid"));
+//							cUnit.setCatname(jArray_child.getJSONObject(j).getString("catname"));
+//							list.add(cUnit);
+//						}
+//						unit.setC_types(list);
+//						list_type.add(unit);
+//					}
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -573,32 +594,18 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 			getDataTask = null;
 			if (message != null) {
 				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
-					popType = new PopExhibitionType(ExhibitionActivity.this, list_type, 
-							btn_menu, dm.widthPixels, dm.heightPixels / 5 * 4);
-					popType.setOnMyItemClickListener(ExhibitionActivity.this);
+//					popType = new PopExhibitionType(PestActivity.this, list_type, 
+//							btn_menu, dm.widthPixels, dm.heightPixels / 5 * 4);
+//					popType.setOnMyItemClickListener(PestActivity.this);
 				} else {
-					comFunction.toastMsg(message, ExhibitionActivity.this);
+					comFunction.toastMsg(message, VideoActivity.this);
 				}
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						ExhibitionActivity.this);
+						VideoActivity.this);
 			}
 			getAD();
 			super.onPostExecute(result);
-		}
-	}
-
-	/***
-	 * 获取广告图片
-	 */
-	private void getAD() {
-		if (comFunction.isWiFi_3G(this)) {
-			if (getDataTask == null) {
-				getADTask = new GetADTask();
-				getADTask.execute();
-			}
-		} else {
-			comFunction.toastMsg(getString(R.string.toast_net_link), this);
 		}
 	}
 
@@ -630,14 +637,14 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			paramsList = new ArrayList<NameValuePair>();
-			paramsList.add(new BasicNameValuePair("spaceId", "102"));
+			paramsList.add(new BasicNameValuePair("spaceId", "103"));
 		}
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
 			String requery = comFunction.getDataFromServer("ynb_ad_index",
-					paramsList, ExhibitionActivity.this);
+					paramsList, VideoActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
@@ -678,11 +685,11 @@ public class ExhibitionActivity extends Activity implements OnClickListener,
 				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
 					initPVData();
 				} else {
-					comFunction.toastMsg(message, ExhibitionActivity.this);
+					comFunction.toastMsg(message, VideoActivity.this);
 				}
 			} else {
 				comFunction.toastMsg(getString(R.string.toast_net_link),
-						ExhibitionActivity.this);
+						VideoActivity.this);
 			}
 			getData();
 		}
