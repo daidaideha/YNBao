@@ -148,7 +148,7 @@
             android:name="com.innouni.yinongbao.activity.exhibition.ExhibitionCompanyDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        
+
         <!-- the pest activity -->
         <activity
             android:name="com.innouni.yinongbao.activity.pest.PestActivity"
@@ -213,6 +213,9 @@
         <activity android:name="com.innouni.yinongbao.activity.person.MyGroupActivity" />
         <activity android:name="com.innouni.yinongbao.activity.person.PublicPostsActivity" />
         <activity android:name="com.innouni.yinongbao.activity.person.HelpCenterActivity" />
+        <activity android:name="com.innouni.yinongbao.activity.person.ModifySexActivity" />
+        <activity android:name="com.innouni.yinongbao.activity.person.ModifyDescActivity" />
+        <activity android:name="com.innouni.yinongbao.activity.person.HelpCenterItemDetailActivity" />
 
         <!-- end -->
     </application>

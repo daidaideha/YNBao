@@ -10,9 +10,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -25,13 +27,10 @@ import android.widget.TextView;
 
 import com.innouni.yinongbao.R;
 import com.innouni.yinongbao.adapter.HelpCenterAdapter;
-import com.innouni.yinongbao.adapter.MyCollectVideoAdapter;
-import com.innouni.yinongbao.adapter.MyGroupAdapter;
 import com.innouni.yinongbao.unit.HttpCode;
 import com.innouni.yinongbao.view.PullToRefreshView;
 import com.innouni.yinongbao.view.PullToRefreshView.OnHeaderRefreshListener;
 import com.innouni.yinongbao.widget.comFunction;
-import com.innouni.yinongbao.widget.sPreferences;
 
 /**
  * 帮助中心
@@ -40,7 +39,7 @@ import com.innouni.yinongbao.widget.sPreferences;
  * 
  */
 public class HelpCenterActivity extends Activity implements
-		OnHeaderRefreshListener, OnItemClickListener {
+		OnHeaderRefreshListener, OnItemClickListener, TextWatcher {
 
 	/**
 	 * TitleBar相关
@@ -56,18 +55,18 @@ public class HelpCenterActivity extends Activity implements
 	private HelpCenterAdapter adapter;
 	private GetDataTask getDataTask;
 	private ArrayList<HelpCenter> list_data;
-	
+
 	/**
 	 * 搜索
 	 */
 	private EditText searchView;
 	private Button searchButton;
-	private String key =" ";
+	private String key = " ";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_my_group);
+		setContentView(R.layout.activity_help_c);
 		list_data = new ArrayList<HelpCenter>();
 		initHeader();
 		initView();
@@ -77,6 +76,11 @@ public class HelpCenterActivity extends Activity implements
 	 * 初始化头部控件
 	 */
 	private void initHeader() {
+		searchButton = (Button) findViewById(R.id.btn_menu);
+		searchButton.setVisibility(View.GONE);
+		searchView = (EditText) findViewById(R.id.edt_search);
+		searchView.addTextChangedListener(this);
+
 		rl_back = (RelativeLayout) findViewById(R.id.rl_header_back);
 		tv_title = (TextView) findViewById(R.id.tv_header_title);
 
@@ -191,14 +195,35 @@ public class HelpCenterActivity extends Activity implements
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-			long arg3) {
-
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		String itemid = adapter.getItem(position).id;
+		Intent intent = new Intent(HelpCenterActivity.this,
+				HelpCenterItemDetailActivity.class);
+		intent.putExtra("itemid", itemid);
+		startActivity(intent);
 	}
 
 	@Override
 	public void onHeaderRefresh(PullToRefreshView view) {
 		getData();
+	}
+
+	@Override
+	public void afterTextChanged(Editable s) {
+		key = s.toString();
+		getData();
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count,
+			int after) {
+
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+
 	}
 
 }

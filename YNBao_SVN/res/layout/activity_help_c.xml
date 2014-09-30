@@ -6,14 +6,22 @@
 
     <include layout="@layout/view_header" />
 
-    <!-- <LinearLayout
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:focusable="true"
+        android:focusableInTouchMode="true" >
+
+        <requestFocus />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp" >
+        android:orientation="horizontal" >
 
-        <include layout="@layout/view_search"/>
-    </LinearLayout> -->
+        <include layout="@layout/view_search" />
+    </LinearLayout>
 
     <com.innouni.yinongbao.view.PullToRefreshView
         android:id="@+id/pullview"

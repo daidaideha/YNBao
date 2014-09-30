@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <include layout="@layout/view_header" />
+
+        <ImageButton
+            android:id="@+id/ibnt_person_namedone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20sp"
+            android:background="@drawable/bg_person_save" />
+    </RelativeLayout>
+    
+    <EditText 
+        android:id="@+id/dec"
+        android:gravity="top"
+        android:hint="请输入个人说明"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_ask_addimage"/>
+
+</LinearLayout>

@@ -46,20 +46,31 @@ import com.innouni.yinongbao.widget.sPreferences;
  */
 public class UserInfoActivity extends Activity implements OnClickListener {
 
-	private static int RESULT_MODIFY_NAME = 0; // 调用相机拍照后的请求码
 	private static int RESULT_LOAD_IMAGE = 1; // 从图库加载图片后的请求码
 	private static int RESULT_TAKE_PHOTO = 2; // 调用相机拍照后的请求码
-	private File imageFile; // 上传到服务器的图片文件
+	private static int RESULT_MODIFY_NAME = 3; // 修改用户名的请求码
+	private static int RESULT_MODIFY_SEX = 4; // 修改性别的请求码
+	private static int RESULT_MODIFY_DESC = 5; // 修改个人说明的请求码
 
 	private sPreferences iSPreferences;
-	private PopupWindow dialog;
+	private PopupWindow dialog; // 修改头像弹出对话框
+
+	/**
+	 * TitleBar
+	 */
 	private RelativeLayout backLayout;
 	private TextView titleView;
 	private ImageButton submitButton;
+
+	/**
+	 * 个人信息相关
+	 */
 	private ImageView headView;
 	private TextView nameView, realNameView;
-	
+	private TextView sexView, descripView;
+
 	private SubmitTask submitTask;
+	private File imageFile; // 上传到服务器的图片文件
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +101,10 @@ public class UserInfoActivity extends Activity implements OnClickListener {
 		nameView.setOnClickListener(this);
 		realNameView = (TextView) findViewById(R.id.txt_person_realnameedit);
 		realNameView.setText(iSPreferences.getStringValues("realname"));
+		sexView = (TextView) findViewById(R.id.txt_person_sexedit);
+		descripView = (TextView) findViewById(R.id.txt_person_noteedit);
+		sexView.setOnClickListener(this);
+		descripView.setOnClickListener(this);
 	}
 
 	@Override
@@ -106,8 +121,18 @@ public class UserInfoActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.txt_person_usernameedit:
 			// 修改用户名
-			Intent intent = new Intent(UserInfoActivity.this, ModifyUserNameActivity.class);
-			startActivityForResult(intent, RESULT_MODIFY_NAME);
+			startActivityForResult(new Intent(UserInfoActivity.this,
+					ModifyUserNameActivity.class), RESULT_MODIFY_NAME);
+			break;
+		case R.id.txt_person_sexedit:
+			// 修改性别
+			startActivityForResult(new Intent(UserInfoActivity.this,
+					ModifySexActivity.class), RESULT_MODIFY_SEX);
+			break;
+		case R.id.txt_person_noteedit:
+			// 修改个人说明
+			startActivityForResult(new Intent(UserInfoActivity.this,
+					ModifyDescActivity.class), RESULT_MODIFY_DESC);
 			break;
 		case R.id.tv_album:
 			// 从相册选择
@@ -179,9 +204,23 @@ public class UserInfoActivity extends Activity implements OnClickListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		// 修改用户名返回
-		if (resultCode == ModifyUserNameActivity.RESULT_MODIFY_CODE && data != null) {
+		if (resultCode == ModifyUserNameActivity.RESULT_MODIFY_CODE
+				&& data != null) {
 			String newusername = data.getStringExtra("new_username");
 			nameView.setText(newusername);
+			return;
+		}
+		// 修改性别返回
+		if (resultCode == ModifySexActivity.RESULT_MODIFY_CODE && data != null) {
+			String sex = data.getStringExtra("sex");
+			sexView.setText(sex);
+			return;
+		}
+		// 修改个人说明返回
+		if (resultCode == ModifyDescActivity.RESULT_MODIFY_CODE && data != null) {
+			String dec = data.getStringExtra("desc");
+			descripView.setText(dec);
+			return;
 		}
 		// 相册选取照片和拍照返回
 		if (resultCode == RESULT_OK && data != null) {
@@ -233,18 +272,17 @@ public class UserInfoActivity extends Activity implements OnClickListener {
 			}
 		}
 	}
-	
+
 	/**
 	 * 上传修改信息异步任务
 	 */
 	private class SubmitTask extends AsyncTask<Void, Void, Void> {
-		
+
 		@Override
 		protected Void doInBackground(Void... params) {
 			return null;
 		}
-		
-		
+
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
