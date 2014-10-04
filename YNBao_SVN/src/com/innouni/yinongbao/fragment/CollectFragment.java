@@ -1,17 +1,18 @@
 package com.innouni.yinongbao.fragment;
 
-import com.innouni.yinongbao.R;
-import com.innouni.yinongbao.R.id;
-import com.innouni.yinongbao.R.layout;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+
+import com.innouni.yinongbao.R;
+import com.innouni.yinongbao.activity.person.MyCollectExpertActivity;
+import com.innouni.yinongbao.activity.person.MyCollectVideoActivity;
+import com.innouni.yinongbao.widget.IntentToOther;
 
 /*
  * Date : 2014-9-24
@@ -75,8 +76,10 @@ public class CollectFragment extends Fragment implements OnClickListener{
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.ibtn_collect_firstfirst:{//专家按钮点击事件
-			
-			break;
+			/**
+			 * add by hugj
+			 */
+			new IntentToOther(getActivity(), MyCollectExpertActivity.class, null);
 		}
 		case R.id.ibtn_collect_firsttwo:{//作物按钮点击事件
 			break;
@@ -91,6 +94,10 @@ public class CollectFragment extends Fragment implements OnClickListener{
 			break;
 		}
 		case R.id.ibtn_collect_secondthree:{//视频按钮点击事件
+			/**
+			 * add by hugj
+			 */
+			new IntentToOther(getActivity(), MyCollectVideoActivity.class, null);
 			break;
 		}
 		case R.id.ibtn_collect_thirdone:{//添加按钮

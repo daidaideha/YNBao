@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.innouni.yinongbao.R;
+import com.innouni.yinongbao.widget.IntentToOther;
 
 /**
  * 发表帖子
@@ -23,7 +24,7 @@ public class PublicPostsActivity extends Activity implements OnClickListener {
 	 * TitleBar相关
 	 */
 	private RelativeLayout rl_back;
-	private TextView tv_title;
+	private TextView tv_title, tv_right;
 
 	private EditText titleView, contentView;
 	private Button submitButton;
@@ -49,6 +50,15 @@ public class PublicPostsActivity extends Activity implements OnClickListener {
 			@Override
 			public void onClick(View arg0) {
 				finish();
+			}
+		});
+		
+		tv_right = (TextView) findViewById(R.id.tv_r);
+		tv_right.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				new IntentToOther(PublicPostsActivity.this, MyTieziActivity.class, null);
 			}
 		});
 	}

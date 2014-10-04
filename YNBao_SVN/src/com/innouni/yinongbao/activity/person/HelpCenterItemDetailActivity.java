@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
@@ -39,6 +40,7 @@ public class HelpCenterItemDetailActivity extends Activity {
 
 	private GetDataTask getDataTask;
 	private String id;
+	private String title = "", content = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +93,7 @@ public class HelpCenterItemDetailActivity extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			paramsList = new ArrayList<NameValuePair>();
-			paramsList.add(new BasicNameValuePair("Id ", id));
+			paramsList.add(new BasicNameValuePair("Id", id));
 		}
 
 		@Override
@@ -108,15 +110,17 @@ public class HelpCenterItemDetailActivity extends Activity {
 				code = jobj.getString("code");
 				message = jobj.getString("message");
 				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
-					JSONObject object = jobj.optJSONObject("data");
-					if (object != null) {
-						if (!object.isNull("title")) {
-							String title = object.optString("title");
-							titleView.setText(title);
-						}
-						if (!object.isNull("content")) {
-							String content = object.optString("content");
-							titleContent.setText(content);
+					JSONArray array = jobj.optJSONArray("data");
+					if (array != null && array.length() > 0) {
+						JSONObject object = array.optJSONObject(0);
+						if (object != null) {
+							if (!object.isNull("title")) {
+								title = object.optString("title");
+
+							}
+							if (!object.isNull("content")) {
+								content = object.optString("content");
+							}
 						}
 					}
 				}
@@ -131,6 +135,8 @@ public class HelpCenterItemDetailActivity extends Activity {
 			getDataTask = null;
 			if (message != null) {
 				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
+					titleView.setText(title);
+					titleContent.setText(Html.fromHtml(content));
 				} else {
 					comFunction.toastMsg(message,
 							HelpCenterItemDetailActivity.this);

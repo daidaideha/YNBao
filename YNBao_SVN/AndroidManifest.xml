@@ -223,6 +223,8 @@
         <activity android:name="com.innouni.yinongbao.activity.person.ModifySexActivity" />
         <activity android:name="com.innouni.yinongbao.activity.person.ModifyDescActivity" />
         <activity android:name="com.innouni.yinongbao.activity.person.HelpCenterItemDetailActivity" />
+        <activity android:name="com.innouni.yinongbao.activity.person.MyTieziActivity" />
+        <activity android:name="com.innouni.yinongbao.activity.person.MyCollectExpertActivity" />
 
         <!-- end -->
     </application>

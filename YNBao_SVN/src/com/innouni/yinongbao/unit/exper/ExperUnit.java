@@ -2,6 +2,8 @@ package com.innouni.yinongbao.unit.exper;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 /***
  * 专家库实体类
  * 
@@ -248,6 +250,21 @@ public class ExperUnit {
 
 	public void setGroupid(String groupid) {
 		this.groupid = groupid;
+	}
+	
+	/**
+	 * add by hugj
+	 */
+	public ExperUnit() {}
+	
+	public ExperUnit(JSONObject object) {
+		this.id = object.optString("Id");
+		this.name = object.optString("realname");
+		this.company = object.optString("company");
+		this.position = object.optString("position");
+		this.groupid = object.optString("groupid");
+		this.groupname = object.optString("groupname");
+		this.avatar = object.optString("avatar");
 	}
 
 }
