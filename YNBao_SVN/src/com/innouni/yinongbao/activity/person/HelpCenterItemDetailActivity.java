@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
@@ -38,6 +40,7 @@ public class HelpCenterItemDetailActivity extends Activity {
 
 	private GetDataTask getDataTask;
 	private String id;
+	private String title = "", content = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +88,6 @@ public class HelpCenterItemDetailActivity extends Activity {
 		 * 服务器返回提示内容值
 		 */
 		private String message = null;
-		String title;
-		String content;
 
 		@Override
 		protected void onPreExecute() {
@@ -109,13 +110,17 @@ public class HelpCenterItemDetailActivity extends Activity {
 				code = jobj.getString("code");
 				message = jobj.getString("message");
 				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
-					JSONObject object = jobj.optJSONObject("data");
-					if (object != null) {
-						if (!object.isNull("title")) {
-							title = object.optString("title");
-						}
-						if (!object.isNull("content")) {
-							content = object.optString("content");
+					JSONArray array = jobj.optJSONArray("data");
+					if (array != null && array.length() > 0) {
+						JSONObject object = array.optJSONObject(0);
+						if (object != null) {
+							if (!object.isNull("title")) {
+								title = object.optString("title");
+
+							}
+							if (!object.isNull("content")) {
+								content = object.optString("content");
+							}
 						}
 					}
 				}
@@ -131,7 +136,7 @@ public class HelpCenterItemDetailActivity extends Activity {
 			if (message != null) {
 				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
 					titleView.setText(title);
-					titleContent.setText(content);
+					titleContent.setText(Html.fromHtml(content));
 				} else {
 					comFunction.toastMsg(message,
 							HelpCenterItemDetailActivity.this);
