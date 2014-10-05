@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,12 +85,14 @@ public class HelpCenterItemDetailActivity extends Activity {
 		 * 服务器返回提示内容值
 		 */
 		private String message = null;
+		String title;
+		String content;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			paramsList = new ArrayList<NameValuePair>();
-			paramsList.add(new BasicNameValuePair("Id ", id));
+			paramsList.add(new BasicNameValuePair("Id", id));
 		}
 
 		@Override
@@ -111,12 +112,10 @@ public class HelpCenterItemDetailActivity extends Activity {
 					JSONObject object = jobj.optJSONObject("data");
 					if (object != null) {
 						if (!object.isNull("title")) {
-							String title = object.optString("title");
-							titleView.setText(title);
+							title = object.optString("title");
 						}
 						if (!object.isNull("content")) {
-							String content = object.optString("content");
-							titleContent.setText(content);
+							content = object.optString("content");
 						}
 					}
 				}
@@ -131,6 +130,8 @@ public class HelpCenterItemDetailActivity extends Activity {
 			getDataTask = null;
 			if (message != null) {
 				if (code.equals(HttpCode.SERVICE_SUCCESS)) {
+					titleView.setText(title);
+					titleContent.setText(content);
 				} else {
 					comFunction.toastMsg(message,
 							HelpCenterItemDetailActivity.this);
