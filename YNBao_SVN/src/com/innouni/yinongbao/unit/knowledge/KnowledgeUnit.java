@@ -2,6 +2,8 @@ package com.innouni.yinongbao.unit.knowledge;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 import com.innouni.yinongbao.unit.exper.ExperThreadUnit;
 
 /***
@@ -228,4 +230,19 @@ public class KnowledgeUnit {
 		this.relations = relations;
 	}
 
+	/**
+	 * add bu Hugj
+	 */
+	public KnowledgeUnit() {
+	}
+
+	public KnowledgeUnit(JSONObject object) {
+		this.tid = object.optString("Id");
+		this.title = object.optString("title");
+		this.addtime = object.optString("addtime");
+		this.views = object.optString("views");
+		this.replies = object.optString("replies");
+		this.type = object.optString("type");
+		this.name = object.optString("name");
+	}
 }

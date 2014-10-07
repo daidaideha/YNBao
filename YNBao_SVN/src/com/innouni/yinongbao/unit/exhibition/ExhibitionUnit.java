@@ -2,6 +2,8 @@ package com.innouni.yinongbao.unit.exhibition;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 /***
  * 农资展厅产品实体类
  * 
@@ -104,6 +106,20 @@ public class ExhibitionUnit {
 
 	public void setCaselist(List<String> caselist) {
 		this.caselist = caselist;
+	}
+
+	/**
+	 * add by Hugj
+	 */
+	public ExhibitionUnit() {
+	};
+
+	public ExhibitionUnit(JSONObject object) {
+		title = object.optString("title");
+		id = object.optString("Id");
+		thumb = object.optString("thumb");
+		companyId = object.optString("companyId");
+		company = object.optString("companyName");
 	}
 
 }

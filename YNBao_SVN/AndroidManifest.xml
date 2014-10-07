@@ -225,7 +225,11 @@
         <activity android:name="com.innouni.yinongbao.activity.person.HelpCenterItemDetailActivity" />
         <activity android:name="com.innouni.yinongbao.activity.person.MyTieziActivity" />
         <activity android:name="com.innouni.yinongbao.activity.person.MyCollectExpertActivity" />
-
+        <activity android:name="com.innouni.yinongbao.activity.person.MyCollectKnowledgeActivity" />
+		<activity android:name="com.innouni.yinongbao.activity.person.MyCollectZuowuActivity" />
+		<activity android:name="com.innouni.yinongbao.activity.person.MyCollectShopActivity" />
+		<activity android:name="com.innouni.yinongbao.activity.person.MyCollectProductActivity" />
+		
         <!-- end -->
     </application>
 
