@@ -27,6 +27,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.innouni.yinongbao.R;
+import com.innouni.yinongbao.activity.exhibition.ExhibitionCompanyActivity;
 import com.innouni.yinongbao.adapter.ExperDetailGVAdapter;
 import com.innouni.yinongbao.adapter.ExperDetailListAdapter;
 import com.innouni.yinongbao.cache.ImageLoader;
@@ -166,7 +167,7 @@ public class ExperDetailActivity extends Activity implements OnClickListener {
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		try {
 			id = getIntent().getStringExtra("id");
-			System.out.println("id: " + id); 
+			System.out.println("id: " + id);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -222,12 +223,12 @@ public class ExperDetailActivity extends Activity implements OnClickListener {
 		tListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
 				// TODO Auto-generated method stub
 				Bundle bundle = new Bundle();
 				bundle.putString("id", unit.getBloglist().get(position).getId());
-				new IntentToOther(ExperDetailActivity.this, 
+				new IntentToOther(ExperDetailActivity.this,
 						ExperTechnologyDetailActivity.class, bundle);
 			}
 		});
@@ -252,22 +253,25 @@ public class ExperDetailActivity extends Activity implements OnClickListener {
 			new IntentToOther(this, ExperAskActivity.class, bundle);
 			break;
 		case R.id.tv_exper_tab_right:
-			startActivity(new Intent(Intent.ACTION_VIEW, 
-					Uri.parse("tel:" + unit.getMobile())));
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("tel:"
+					+ unit.getMobile())));
 			break;
 		case R.id.label_exper_question:
 			bundle.putString("id", id);
 			bundle.putInt("type", 0);
-			new IntentToOther(ExperDetailActivity.this, ExperListActivity.class, bundle);
+			new IntentToOther(ExperDetailActivity.this,
+					ExperListActivity.class, bundle);
 			break;
 		case R.id.label_exper_technology:
 			bundle.putString("id", id);
 			bundle.putInt("type", 1);
-			new IntentToOther(ExperDetailActivity.this, ExperListActivity.class, bundle);
+			new IntentToOther(ExperDetailActivity.this,
+					ExperListActivity.class, bundle);
 			break;
 		case R.id.label_exper_company:
 			bundle.putString("id", id);
-			new IntentToOther(ExperDetailActivity.this, ExperCompanyActivity.class, bundle);
+			new IntentToOther(ExperDetailActivity.this,
+					ExperCompanyActivity.class, bundle);
 			break;
 		default:
 			break;
@@ -287,7 +291,7 @@ public class ExperDetailActivity extends Activity implements OnClickListener {
 			comFunction.toastMsg(getString(R.string.toast_net_link), this);
 		}
 	}
-	
+
 	/***
 	 * 关注、取消关注操作
 	 */
@@ -321,7 +325,9 @@ public class ExperDetailActivity extends Activity implements OnClickListener {
 		tv_crop.setText(getString(R.string.label_exper_detail_crop).replace(
 				"$message$", unit.getSkill()));
 		tv_address.setText(getString(R.string.label_exper_detail_address)
-				.replace("$message$", unit.getResideprovince() + unit.getResidecity()
+				.replace(
+						"$message$",
+						unit.getResideprovince() + unit.getResidecity()
 								+ unit.getResidedist()));
 		tv_replay.setText(getString(R.string.label_exper_detail_replay)
 				.replace("$number$", unit.getThreads()));
@@ -348,6 +354,21 @@ public class ExperDetailActivity extends Activity implements OnClickListener {
 			ExperDetailGVAdapter cAdapter = new ExperDetailGVAdapter(this,
 					unit.getCompanylist(), dm.widthPixels / 8);
 			gridView.setAdapter(cAdapter);
+			gridView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						int position, long arg3) {
+					// TODO Auto-generated method stub
+					Bundle bundle = new Bundle();
+					bundle.putString("company", unit.getCompanylist()
+							.get(position).getCompanyname());
+					bundle.putString("id", unit.getCompanylist().get(position)
+							.getUserid());
+					new IntentToOther(ExperDetailActivity.this,
+							ExhibitionCompanyActivity.class, bundle);
+				}
+			});
 		}
 		if (IS_FOCUS) {
 			tv_tab_focus.setCompoundDrawablesWithIntrinsicBounds(
@@ -532,10 +553,10 @@ public class ExperDetailActivity extends Activity implements OnClickListener {
 		private ProgressDialog pd;
 		private JSONObject jobj;
 		private List<NameValuePair> paramsList;
-//		/***
-//		 * 服务器返回类型值 200：成功
-//		 */
-//		private String code;
+		// /***
+		// * 服务器返回类型值 200：成功
+		// */
+		// private String code;
 		/***
 		 * 服务器返回提示内容值
 		 */
@@ -552,22 +573,22 @@ public class ExperDetailActivity extends Activity implements OnClickListener {
 			pd.show();
 			paramsList = new ArrayList<NameValuePair>();
 			paramsList.add(new BasicNameValuePair("Id", id));
-			paramsList.add(new BasicNameValuePair("userId", iSPreferences.getSp()
-					.getString("memberId", "")));
+			paramsList.add(new BasicNameValuePair("userId", iSPreferences
+					.getSp().getString("memberId", "")));
 		}
 
 		@Override
 		protected Void doInBackground(String... parms) {
 			// TODO Auto-generated method stub
-			String requery = comFunction.getDataFromServer(parms[0], paramsList,
-					ExperDetailActivity.this);
+			String requery = comFunction.getDataFromServer(parms[0],
+					paramsList, ExperDetailActivity.this);
 			System.out.println("requery: " + requery);
 			try {
 				jobj = new JSONObject(requery);
 				if (jobj == null) {
 					return null;
 				}
-//				code = jobj.getString("code");
+				// code = jobj.getString("code");
 				message = jobj.getString("message");
 				String data = jobj.getString("data");
 				if (!data.equals("1")) {
@@ -591,11 +612,13 @@ public class ExperDetailActivity extends Activity implements OnClickListener {
 				if (IS_FOCUS) {
 					tv_tab_focus.setCompoundDrawablesWithIntrinsicBounds(
 							R.drawable.icon_exper_fouce_hover, 0, 0, 0);
-					tv_tab_focus.setTextColor(getResources().getColor(R.color.call_red));
+					tv_tab_focus.setTextColor(getResources().getColor(
+							R.color.call_red));
 				} else {
 					tv_tab_focus.setCompoundDrawablesWithIntrinsicBounds(
 							R.drawable.icon_exper_fouce, 0, 0, 0);
-					tv_tab_focus.setTextColor(getResources().getColor(R.color.gray));
+					tv_tab_focus.setTextColor(getResources().getColor(
+							R.color.gray));
 				}
 				comFunction.toastMsg(message, ExperDetailActivity.this);
 			} else {

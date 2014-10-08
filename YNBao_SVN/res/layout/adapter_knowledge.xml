@@ -109,7 +109,6 @@
         android:id="@+id/iv_best"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/rl_bottom"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/iv_blog"
         android:layout_marginRight="50sp"

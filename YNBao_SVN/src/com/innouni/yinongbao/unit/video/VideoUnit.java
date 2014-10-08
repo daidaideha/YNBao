@@ -16,6 +16,10 @@ public class VideoUnit {
 	 */
 	private String id;
 	/***
+	 * 视频播放id
+	 */
+	private String vid;
+	/***
 	 * 害虫名称
 	 */
 	private String title;
@@ -46,6 +50,14 @@ public class VideoUnit {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getVid() {
+		return vid;
+	}
+
+	public void setVid(String vid) {
+		this.vid = vid;
 	}
 
 	public String getTitle() {

@@ -15,4 +15,6 @@
     
     <string name="hint_exhibition_phone">请输入手机号码</string>
     <string name="hint_exhibition_context">请输入文本</string>
+    
+    <string name="hint_video_comment">我说两句......</string>
 </resources>

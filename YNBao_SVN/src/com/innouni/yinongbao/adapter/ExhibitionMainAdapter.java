@@ -19,6 +19,8 @@ import com.innouni.yinongbao.activity.exhibition.ExhibitionDetailActivity;
 import com.innouni.yinongbao.activity.exhibition.ExhibitionTypeActivity;
 import com.innouni.yinongbao.activity.pest.PestDetailActivity;
 import com.innouni.yinongbao.activity.pest.PestTypeActivity;
+import com.innouni.yinongbao.activity.video.VideoDesActivity;
+import com.innouni.yinongbao.activity.video.VideoTypeActivity;
 import com.innouni.yinongbao.unit.exhibition.ExhibitionMainUnit;
 import com.innouni.yinongbao.unit.exhibition.ExhibitionUnit;
 import com.innouni.yinongbao.unit.pest.PestMainUnit;
@@ -32,7 +34,7 @@ import com.innouni.yinongbao.widget.IntentToOther;
  * 农资展厅、害虫图库首页数据适配器
  * 
  * @author LinYuLing
- * @UpdateDate 2014-09-30
+ * @UpdateDate 2014-10-06
  */
 public class ExhibitionMainAdapter<T> extends BaseAdapter {
 	private LayoutInflater inflater;
@@ -127,6 +129,13 @@ public class ExhibitionMainAdapter<T> extends BaseAdapter {
 							.getPicturelist().get(location).getId());
 					new IntentToOther((Activity) context,
 							PestDetailActivity.class, bundle);
+				} else if (list.get(pos) instanceof VideoMainUnit) {
+					bundle.putString("id", ((VideoMainUnit) list.get(pos))
+							.getPicturelist().get(location).getId());
+					bundle.putString("vid", ((VideoMainUnit) list.get(pos))
+							.getPicturelist().get(location).getVid());
+					new IntentToOther((Activity) context,
+							VideoDesActivity.class, bundle);
 				}
 			}
 		});
@@ -145,6 +154,11 @@ public class ExhibitionMainAdapter<T> extends BaseAdapter {
 							((PestMainUnit) list.get(pos)).getCatId());
 					new IntentToOther((Activity) context,
 							PestTypeActivity.class, bundle);
+				} else if (list.get(pos) instanceof VideoMainUnit) {
+					bundle.putString("id",
+							((VideoMainUnit) list.get(pos)).getCatId());
+					new IntentToOther((Activity) context,
+							VideoTypeActivity.class, bundle);
 				}
 			}
 		});

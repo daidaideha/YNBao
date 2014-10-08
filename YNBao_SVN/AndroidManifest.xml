@@ -170,6 +170,14 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.innouni.yinongbao.activity.video.VideoTypeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.innouni.yinongbao.activity.video.VideoDesActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
         <!-- the person activity -->
         <activity
@@ -229,7 +237,7 @@
 		<activity android:name="com.innouni.yinongbao.activity.person.MyCollectZuowuActivity" />
 		<activity android:name="com.innouni.yinongbao.activity.person.MyCollectShopActivity" />
 		<activity android:name="com.innouni.yinongbao.activity.person.MyCollectProductActivity" />
-		
+
         <!-- end -->
     </application>
 
